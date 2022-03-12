@@ -2,6 +2,12 @@ package com.example.memolog
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.example.memolog.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textView.text = "바꿔주세요오오옹~"
+        // navigation
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val bottomNavigationView = binding.bottomNavi
+        NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 }
