@@ -9,9 +9,7 @@
 
   <include
       android:id="@+id/top"
-      layout="@layout/layout_top"
-      tools:layout_editor_absoluteX="0dp"
-      tools:layout_editor_absoluteY="1dp" />
+      layout="@layout/layout_top" />
 
   <fragment
       android:id="@+id/nav_host_fragment"

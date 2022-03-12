@@ -15,6 +15,7 @@
         <!-- No Title Bar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
+        <!-- No State Bar-->
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>
