@@ -1,4 +1,4 @@
-package com.example.memolog.feature
+package com.example.memolog.feature.add
 
 import android.os.Bundle
 import android.view.LayoutInflater

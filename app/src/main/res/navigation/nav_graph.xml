@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.example.memolog.feature.AddFragment"
+        android:name="com.example.memolog.feature.add.AddFragment"
         android:label="AddFragment"
         tools:layout="@layout/fragment_add"/>
 
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.memolog.feature.FavoriteFragment"
+        android:name="com.example.memolog.feature.favorite.FavoriteFragment"
         android:label="FavoriteFragment"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.memolog.feature.SearchFragment"
+        android:name="com.example.memolog.feature.search.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.memolog.feature.HomeFragment"
+        android:name="com.example.memolog.feature.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.memolog.feature.SettingFragment"
+        android:name="com.example.memolog.feature.setting.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
 </navigation>

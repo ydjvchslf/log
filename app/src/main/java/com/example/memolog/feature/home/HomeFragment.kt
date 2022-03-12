@@ -1,4 +1,4 @@
-package com.example.memolog.feature
+package com.example.memolog.feature.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import com.example.memolog.repository.db.Database
 class HomeFragment : Fragment(){
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var db: Database
 
     override fun onCreateView(
         inflater: LayoutInflater,
