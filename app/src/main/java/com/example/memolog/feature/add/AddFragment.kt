@@ -5,6 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.example.memolog.R
 import com.example.memolog.databinding.FragmentAddBinding
 
 class AddFragment : Fragment(){
@@ -21,5 +25,9 @@ class AddFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.addBtn.setOnClickListener {
+            it.findNavController().navigate(R.id.action_add_to_home)
+        }
     }
 }
