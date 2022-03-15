@@ -37,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Title"
+        android:textColorHint="@color/lightGrey"
         style="@style/Text.TitleStyle"
         android:background="@null" />
 
@@ -52,7 +53,8 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="top"
-            android:hint="Contents" />
+            android:hint="Contents"
+            android:textColorHint="@color/lightGrey" />
 
     </ScrollView>
 
