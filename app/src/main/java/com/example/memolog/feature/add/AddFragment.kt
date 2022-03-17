@@ -40,6 +40,10 @@ class AddFragment : Fragment(){
             Log.d("MemoDebug", "AddFragment:: addBtn 클릭!")
             val memo = Memo(0, binding.title.text.toString(), binding.content.text.toString())
             addViewModel.insertMemo(memo)
+
+            //초기화
+            binding.title.text = null
+            binding.content.text = null
         }
 
         binding.loadBtn.setOnClickListener {
