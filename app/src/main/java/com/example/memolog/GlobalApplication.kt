@@ -2,14 +2,14 @@ package com.example.memolog
 
 import android.app.Application
 import androidx.room.Room
-import com.example.memolog.repository.db.Database
+import com.example.memolog.repository.db.AppDatabase
 
 class GlobalApplication: Application() {
     companion object{
         lateinit var appInstance: GlobalApplication
             private set
 
-        lateinit var databaseInstance: Database
+        lateinit var databaseInstance: AppDatabase
             private set
     }
 
@@ -19,7 +19,7 @@ class GlobalApplication: Application() {
 
         databaseInstance = Room.databaseBuilder(
             appInstance.applicationContext,
-            Database::class.java, "database.db"
+            AppDatabase::class.java, "exampleApp.db"
         )
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()

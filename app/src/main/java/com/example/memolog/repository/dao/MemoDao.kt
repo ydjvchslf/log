@@ -8,11 +8,11 @@ import com.example.memolog.repository.entity.Memo
 @Dao
 interface MemoDao {
     @Query("SELECT * FROM memo")
-    fun getAll(): List<Memo>
+    suspend fun getAll(): List<Memo>
 
-    @Insert
-    fun insertMemo(memo: Memo)
+    @Insert()
+    suspend fun insertMemo(memo: Memo) : Long // 해당 메모의 id를 알 수 있도록 // TODO :: Int 는 왜안돼?
 
     @Query("DELETE FROM memo")
-    fun deleteAll()
+    suspend fun deleteAll()
 }
