@@ -11,13 +11,14 @@ import kotlinx.coroutines.launch
 
 class AddViewModel(private val memoRepository: MemoRepository): ViewModel() {
 
-    private val memoId = MutableLiveData<Long>()
+    //private val memoId = MutableLiveData<Long>()
 
     fun insertMemo(memo: Memo) {
         CoroutineScope(Dispatchers.IO).launch {
-
+            Log.d("MemoDebug", "AddViewModel::insertMemo-()")
             memoRepository.insertMemo(memo).let { id ->
-                memoId.postValue(id)
+                //memoId.postValue(id) //setValue 메인쓰레드 반영, postValue는 백그라운드에서 반영
+                Log.d("MemoDebug", "memoId: $id")
             }
         }
     }
