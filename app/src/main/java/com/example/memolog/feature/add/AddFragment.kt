@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.memolog.R
@@ -39,9 +38,21 @@ class AddFragment : Fragment(){
         binding.addBtn.setOnClickListener {
             //it.findNavController().navigate(R.id.action_add_to_home)
             Log.d("MemoDebug", "AddFragment:: addBtn 클릭!")
-            val memo = Memo(0, binding.title.toString(), binding.content.toString())
+            val memo = Memo(0, binding.title.text.toString(), binding.content.text.toString())
             addViewModel.insertMemo(memo)
         }
+
+        binding.loadBtn.setOnClickListener {
+            Log.d("MemoDebug", "AddFragment:: loadBtn 클릭!")
+            //addViewModel.getAllMemo()
+            addViewModel.memoList.observe(viewLifecycleOwner){ memoList ->
+                val listSize = memoList.size
+                binding.textView.text = listSize.toString()
+                Log.d("MemoDebug", "AddFragment:: size : $listSize \n")
+                Log.d("MemoDebug", "AddFragment:: memoList : $memoList")
+            }
+        }
+
     }
 
     private fun initViewModel(){

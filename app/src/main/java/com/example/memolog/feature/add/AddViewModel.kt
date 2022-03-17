@@ -1,8 +1,7 @@
 package com.example.memolog.feature.add
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.memolog.repository.MemoRepository
 import com.example.memolog.repository.entity.Memo
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class AddViewModel(private val memoRepository: MemoRepository): ViewModel() {
 
-    //private val memoId = MutableLiveData<Long>()
+    var memoList : LiveData<List<Memo>> = memoRepository.getAllMemo()
 
     fun insertMemo(memo: Memo) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -23,4 +22,10 @@ class AddViewModel(private val memoRepository: MemoRepository): ViewModel() {
         }
     }
 
+    fun getAllMemo(){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("MemoDebug", "AddViewModel::getAllMemo-()")
+            //memoList = memoRepository.getAllMemo()
+        }
+    }
 }
