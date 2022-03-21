@@ -17,7 +17,6 @@
             android:id="@+id/title"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:text="@{item.title}"
             tools:text="제목"
             android:textColor="@color/black"
             android:textSize="20dp"
