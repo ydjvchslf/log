@@ -22,6 +22,7 @@ import com.example.memolog.repository.MemoRepository
 import com.example.memolog.repository.entity.Memo
 
 class AddFragment : Fragment(){
+
     private lateinit var binding: FragmentAddBinding
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var addViewModel: AddViewModel
@@ -71,7 +72,6 @@ class AddFragment : Fragment(){
             //addViewModel.getAllMemo()
             addViewModel.memoList.observe(viewLifecycleOwner){ memoList ->
                 val listSize = memoList.size
-                binding.textView.text = listSize.toString()
                 Log.d("MemoDebug", "AddFragment:: size : $listSize \n")
                 Log.d("MemoDebug", "AddFragment:: memoList : $memoList")
             }
