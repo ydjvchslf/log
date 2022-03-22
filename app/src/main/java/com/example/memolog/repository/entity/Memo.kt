@@ -8,5 +8,8 @@ import androidx.room.PrimaryKey
 data class Memo(
     @PrimaryKey(autoGenerate = true) var id: Long,
     @ColumnInfo var title: String,
-    @ColumnInfo var content: String
+    @ColumnInfo var content: String,
+    @ColumnInfo var isFavorite: Boolean,
+    @ColumnInfo var isLocked: Boolean,
+    @ColumnInfo var isBookmark: Boolean,
 )

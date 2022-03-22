@@ -57,7 +57,14 @@ class AddFragment : Fragment(){
                 return@setOnClickListener
             }
 
-            val memo = Memo(0, binding.title.text.toString(), binding.content.text.toString())
+            val memo = Memo(
+                id = 0,
+                title = binding.title.text.toString(),
+                content = binding.content.text.toString(),
+                isFavorite = false,
+                isLocked = false,
+                isBookmark = false
+            )
             addViewModel.insertMemo(memo)
 
             //초기화
