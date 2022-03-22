@@ -8,7 +8,7 @@ import com.example.memolog.repository.entity.Memo
 
 @Dao
 interface MemoDao {
-    @Query("SELECT * FROM memo")
+    @Query("SELECT * FROM memo ORDER BY id DESC")
     fun getAll(): LiveData<List<Memo>>
 
     @Insert()
