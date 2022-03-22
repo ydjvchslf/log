@@ -17,16 +17,15 @@
             android:id="@+id/title"
             android:layout_width="130dp"
             android:layout_height="130dp"
+            style="@style/Text.ItemTitle"
             tools:text="제목"
-            android:textColor="@color/black"
-            android:textSize="20dp"
             android:gravity="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="10dp"
-            android:background="@color/normalGrey"/>
+            android:padding="20dp"
+            android:background="@color/grey_150"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

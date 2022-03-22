@@ -6,19 +6,19 @@
 
     <!--light-->
     <font
-        android:font="@font/y_universe_light"
+        android:font="@font/chosun"
         android:fontStyle="normal"
         android:fontWeight="300"
-        app:font="@font/y_universe_light"
+        app:font="@font/chosun"
         app:fontStyle="normal"
         app:fontWeight="300" />
 
     <!--bold-->
     <font
-        android:font="@font/y_universe_bold"
+        android:font="@font/chosun"
         android:fontStyle="normal"
         android:fontWeight="1000"
-        app:font="@font/y_universe_bold"
+        app:font="@font/chosun"
         app:fontStyle="normal"
         app:fontWeight="1000" />
 

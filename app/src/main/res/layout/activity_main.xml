@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/paleGrey">
+    android:background="@color/grey_100">
 
   <fragment
       android:id="@+id/nav_host_fragment"
