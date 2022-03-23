@@ -47,7 +47,13 @@ class DetailFragment : Fragment(){
 
         val args: DetailFragmentArgs by navArgs()
         val memoId = args.memoId
-        Toast.makeText(context, "id: $memoId", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, "id: $memoId", Toast.LENGTH_LONG).show()
+
+        detailModel.getOneMemo(memoId) { memo ->
+            binding.updatedTime.text = memo.updatedTime
+            binding.title.text = memo.title
+            binding.content.text = memo.content
+        }
 
     }
 

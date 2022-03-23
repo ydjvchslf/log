@@ -10,14 +10,11 @@ import kotlinx.coroutines.launch
 
 class DetailModel(private val memoRepository: MemoRepository): ViewModel() {
 
-    init {
-
-    }
-
-    fun getOneMemo(id: Long) {
+    fun getOneMemo(id: Long, resultMemo: ((Memo) -> Unit)) {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("MemoDebug", "DetailModel::getOneMemo-()")
-
+            val memo = memoRepository.selectOne(id)
+            resultMemo.invoke(memo)
         }
     }
 }
