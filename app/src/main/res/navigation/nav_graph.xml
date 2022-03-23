@@ -31,11 +31,22 @@
         android:id="@+id/homeFragment"
         android:name="com.example.memolog.feature.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_detail"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.memolog.feature.setting.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.memolog.feature.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail"/>
+
 </navigation>
