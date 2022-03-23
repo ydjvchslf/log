@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat.apply
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
@@ -42,6 +43,11 @@ class DetailFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("MemoDebug", "DetailFragment::onViewCreated-()")
+
+        val args: DetailFragmentArgs by navArgs()
+        val memoId = args.memoId
+        Toast.makeText(context, "id: $memoId", Toast.LENGTH_LONG).show()
 
     }
 
