@@ -16,11 +16,11 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.45" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.42386831275720166" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_title.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/layout_top.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/layout_top.xml" value="0.165" />
         <entry key="app/src/main/res/layout/memo_item.xml" value="0.45" />
         <entry key="app/src/main/res/layout/toast_layout.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />

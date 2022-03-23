@@ -14,4 +14,9 @@
     <color name="grey_400">#616161</color>
     <color name="yellow_300">#FBD46D</color>
     <color name="yellow_400">#DDA24B</color>
+
+    <color name="beige_100">#F3EFCC</color>
+    <color name="beige_200">#ECE7B4</color>
+    <color name="green_500">#406343</color>
+    <color name="green_600">#32502E</color>
 </resources>
