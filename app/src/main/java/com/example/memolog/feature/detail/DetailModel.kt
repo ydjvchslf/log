@@ -1,4 +1,4 @@
-package com.example.memolog.feature.add
+package com.example.memolog.feature.detail
 
 import android.util.Log
 import androidx.lifecycle.*
@@ -8,24 +8,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddViewModel(private val memoRepository: MemoRepository): ViewModel() {
+class DetailModel(private val memoRepository: MemoRepository): ViewModel() {
 
-    var memoList : LiveData<List<Memo>> = memoRepository.getAllMemo()
+    init {
 
-    fun insertMemo(memo: Memo) {
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("MemoDebug", "AddViewModel::insertMemo-()")
-            memoRepository.insertMemo(memo).let { id ->
-                //memoId.postValue(id) //setValue 메인쓰레드 반영, postValue는 백그라운드에서 반영
-                Log.d("MemoDebug", "memoId: $id")
-            }
-        }
     }
 
-    fun getAllMemo(){
+    fun getOneMemo(id: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            Log.d("MemoDebug", "AddViewModel::getAllMemo-()")
-            //memoList = memoRepository.getAllMemo()
+            Log.d("MemoDebug", "DetailModel::getOneMemo-()")
+
         }
     }
 }
