@@ -29,6 +29,7 @@ class DetailFragment : Fragment(){
     private lateinit var binding: FragmentDetailBinding
     lateinit var viewModelFactory: ViewModelFactory
     lateinit var detailModel: DetailModel
+    var isEditMode = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +48,17 @@ class DetailFragment : Fragment(){
 
         val args: DetailFragmentArgs by navArgs()
         val memoId = args.memoId
-        //Toast.makeText(context, "id: $memoId", Toast.LENGTH_LONG).show()
 
         detailModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = memo.updatedTime
-            binding.title.text = memo.title
+            //binding.title.text = memo.title
             binding.content.text = memo.content
+        }
+
+        binding.title.setOnClickListener {
+            if(!isEditMode){
+
+            }
         }
 
     }
