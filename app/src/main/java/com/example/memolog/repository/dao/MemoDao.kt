@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.example.memolog.repository.entity.Memo
 
 @Dao
@@ -16,4 +17,13 @@ interface MemoDao {
 
     @Query("DELETE FROM memo")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM memo WHERE id = :id")
+    suspend fun deleteOne(id: Long)
+
+    @Query("SELECT * FROM memo WHERE id = :id")
+    suspend fun selectOne(id: Long): Memo
+
+    @Query("UPDATE memo SET isFavorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavorite(id: Long, isFavorite: Boolean)
 }

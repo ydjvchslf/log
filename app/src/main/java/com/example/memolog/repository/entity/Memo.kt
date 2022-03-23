@@ -11,5 +11,8 @@ data class Memo(
     @ColumnInfo var content: String,
     @ColumnInfo var isFavorite: Boolean,
     @ColumnInfo var isLocked: Boolean,
+    @ColumnInfo var password: String?,
     @ColumnInfo var isBookmark: Boolean,
+    @ColumnInfo var createdTime: String,
+    @ColumnInfo var updatedTime: String,
 )

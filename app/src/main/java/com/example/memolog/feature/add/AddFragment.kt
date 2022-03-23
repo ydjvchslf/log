@@ -17,6 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
+import com.example.memolog.currentDate
 import com.example.memolog.databinding.FragmentAddBinding
 import com.example.memolog.repository.MemoRepository
 import com.example.memolog.repository.entity.Memo
@@ -63,7 +64,10 @@ class AddFragment : Fragment(){
                 content = binding.content.text.toString(),
                 isFavorite = false,
                 isLocked = false,
-                isBookmark = false
+                password = null,
+                isBookmark= false,
+                createdTime = currentDate,
+                updatedTime = currentDate
             )
             addViewModel.insertMemo(memo)
 
