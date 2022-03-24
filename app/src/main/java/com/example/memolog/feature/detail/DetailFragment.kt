@@ -2,6 +2,7 @@ package com.example.memolog.feature.detail
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.Gravity
 import android.view.Gravity.apply
@@ -12,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat.apply
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -28,8 +30,8 @@ class DetailFragment : Fragment(){
 
     private lateinit var binding: FragmentDetailBinding
     lateinit var viewModelFactory: ViewModelFactory
-    lateinit var detailModel: DetailModel
-    var isEditMode = false
+    private lateinit var detailModel: DetailModel
+    private var isEditMode = MutableLiveData(false)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,14 +53,31 @@ class DetailFragment : Fragment(){
 
         detailModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = memo.updatedTime
-            //binding.title.text = memo.title
-            binding.content.text = memo.content
+            binding.textTitle.text = memo.title
+            binding.textContent.text = memo.content
         }
 
-        binding.title.setOnClickListener {
-            if(!isEditMode){
+        isEditMode.observe(viewLifecycleOwner){ isEditMode ->
+            if(isEditMode){
+                binding.editBtn.visibility = View.VISIBLE
+                binding.editTitle.visibility = View.VISIBLE
+                binding.editContent.visibility = View.VISIBLE
 
+                binding.textTitle.visibility = View.GONE
+                binding.textContent.visibility = View.GONE
             }
+        }
+
+        binding.textTitle.setOnClickListener {
+            isEditMode.value = true
+            binding.editTitle.setText(binding.textTitle.text.toString())
+            binding.editContent.setText(binding.textContent.text.toString())
+        }
+
+        binding.textContent.setOnClickListener {
+            isEditMode.value = true
+            binding.editTitle.setText(binding.textTitle.text.toString())
+            binding.editContent.setText(binding.textContent.text.toString())
         }
 
     }
