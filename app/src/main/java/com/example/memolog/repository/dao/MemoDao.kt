@@ -24,6 +24,9 @@ interface MemoDao {
     @Query("SELECT * FROM memo WHERE id = :id")
     suspend fun selectOne(id: Long): Memo
 
+    @Update
+    suspend fun updateMemo(memo: Memo): Int
+
     @Query("UPDATE memo SET isFavorite = :isFavorite WHERE id = :id")
     suspend fun updateFavorite(id: Long, isFavorite: Boolean)
 }
