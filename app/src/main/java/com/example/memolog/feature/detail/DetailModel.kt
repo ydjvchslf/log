@@ -17,4 +17,11 @@ class DetailModel(private val memoRepository: MemoRepository): ViewModel() {
             resultMemo.invoke(memo)
         }
     }
+
+    fun updateMemo(memo: Memo){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("MemoDebug", "DetailModel::updateMemo-()")
+            memoRepository.updateMemo(memo)
+        }
+    }
 }

@@ -25,6 +25,15 @@ import com.example.memolog.databinding.FragmentAddBinding
 import com.example.memolog.databinding.FragmentDetailBinding
 import com.example.memolog.repository.MemoRepository
 import com.example.memolog.repository.entity.Memo
+import android.view.inputmethod.InputMethodManager
+
+import android.content.Context.INPUT_METHOD_SERVICE
+import androidx.core.content.ContextCompat
+
+import androidx.core.content.ContextCompat.getSystemService
+
+
+
 
 class DetailFragment : Fragment(){
 
@@ -65,6 +74,19 @@ class DetailFragment : Fragment(){
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
+            }else{
+                binding.editBtn.visibility = View.INVISIBLE
+                binding.editTitle.visibility = View.INVISIBLE
+                binding.editContent.visibility = View.INVISIBLE
+
+                binding.textTitle.visibility = View.VISIBLE
+                binding.textContent.visibility = View.VISIBLE
+
+                // 수정 내용 -> textView 세팅
+                binding.textTitle.text = binding.editTitle.text
+                binding.textContent.text = binding.editContent.text
+
+                // TODO:: 키보드 내리기 추가할 것
             }
         }
 
@@ -78,6 +100,25 @@ class DetailFragment : Fragment(){
             isEditMode.value = true
             binding.editTitle.setText(binding.textTitle.text.toString())
             binding.editContent.setText(binding.textContent.text.toString())
+        }
+
+        binding.editBtn.setOnClickListener {
+            detailModel.getOneMemo(memoId) { current ->
+                val updatedMemo = Memo(
+                    id = memoId,
+                    title = binding.editTitle.text.toString(),
+                    content = binding.editContent.text.toString(),
+                    isFavorite = current.isFavorite,
+                    isLocked = current.isLocked,
+                    password = current.password,
+                    isBookmark = current.isBookmark,
+                    createdTime = current.createdTime,
+                    updatedTime = currentDate
+                )
+                val result = detailModel.updateMemo(updatedMemo)
+                Log.d("MemoDebug", "updateMemo 후 result : $result")
+                isEditMode.postValue(false)
+            }
         }
 
     }
