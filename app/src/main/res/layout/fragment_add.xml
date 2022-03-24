@@ -53,14 +53,13 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:fillViewport="true">
 
-            <!-- TODO:: 여기 영역 고쳐야함!! -->
             <EditText
                 android:id="@+id/content"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:minHeight="500dp"
+                android:layout_height="wrap_content"
                 style="@style/Text.ContentStyle"
                 android:background="@null"
                 android:gravity="top"
