@@ -31,8 +31,7 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import androidx.core.content.ContextCompat
 
 import androidx.core.content.ContextCompat.getSystemService
-
-
+import androidx.navigation.fragment.findNavController
 
 
 class DetailFragment : Fragment(){
@@ -109,6 +108,26 @@ class DetailFragment : Fragment(){
                 detailModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
+        }
+
+        // back 버튼
+        binding.backBtn.setOnClickListener {
+            if (isEditMode.value == true) {
+                detailModel.getOneMemo(memoId) { current ->
+                    current.title = binding.editTitle.text.toString()
+                    current.content = binding.editContent.text.toString()
+                    detailModel.updateMemo(current)
+                    isEditMode.postValue(false)
+                }
+            } else {
+                detailModel.getOneMemo(memoId) { current ->
+                    current.title = binding.textTitle.text.toString()
+                    current.content = binding.textContent.text.toString()
+                    detailModel.updateMemo(current)
+                    isEditMode.postValue(false)
+                }
+            }
+            it.findNavController().navigate(R.id.homeFragment)
         }
     }
 
