@@ -51,6 +51,9 @@
         <argument
             android:name="memoId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_detail_to_home"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>

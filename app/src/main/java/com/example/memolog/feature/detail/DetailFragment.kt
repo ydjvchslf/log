@@ -28,18 +28,22 @@ import com.example.memolog.repository.entity.Memo
 import android.view.inputmethod.InputMethodManager
 
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.DialogInterface
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
 
 
-class DetailFragment : Fragment(){
+class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var detailModel: DetailModel
     private var isEditMode = MutableLiveData(false)
+    private var memoId = 0L
+    private lateinit var backPressCallback: OnBackPressedCallback
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +61,7 @@ class DetailFragment : Fragment(){
         Log.d("MemoDebug", "DetailFragment::onViewCreated-()")
 
         val args: DetailFragmentArgs by navArgs()
-        val memoId = args.memoId
+        memoId = args.memoId
 
         detailModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = memo.updatedTime
@@ -65,15 +69,15 @@ class DetailFragment : Fragment(){
             binding.textContent.text = memo.content
         }
 
-        isEditMode.observe(viewLifecycleOwner){ isEditMode ->
-            if(isEditMode){
+        isEditMode.observe(viewLifecycleOwner) { isEditMode ->
+            if (isEditMode) {
                 binding.editBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
-            }else{
+            } else {
                 binding.editBtn.visibility = View.INVISIBLE
                 binding.editTitle.visibility = View.INVISIBLE
                 binding.editContent.visibility = View.INVISIBLE
@@ -112,28 +116,50 @@ class DetailFragment : Fragment(){
 
         // back 버튼
         binding.backBtn.setOnClickListener {
-            if (isEditMode.value == true) {
-                detailModel.getOneMemo(memoId) { current ->
-                    current.title = binding.editTitle.text.toString()
-                    current.content = binding.editContent.text.toString()
-                    detailModel.updateMemo(current)
-                    isEditMode.postValue(false)
-                }
-            } else {
-                detailModel.getOneMemo(memoId) { current ->
-                    current.title = binding.textTitle.text.toString()
-                    current.content = binding.textContent.text.toString()
-                    detailModel.updateMemo(current)
-                    isEditMode.postValue(false)
-                }
-            }
-            it.findNavController().navigate(R.id.homeFragment)
+            memoId
+            reviseMemo()
         }
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         viewModelFactory = ViewModelFactory(MemoRepository())
         detailModel = ViewModelProvider(this, viewModelFactory).get(DetailModel::class.java)
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(findNavController().currentDestination?.id == R.id.detailFragment) {
+                    Log.d("MemoDebug", "DetailFragment::handleOnBackPressed-()")
+                    reviseMemo()
+                }
+            }//
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        backPressCallback.remove()
+    }
+
+    private fun reviseMemo(){
+        if (isEditMode.value == true) {
+            detailModel.getOneMemo(memoId) { current ->
+                current.title = binding.editTitle.text.toString()
+                current.content = binding.editContent.text.toString()
+                detailModel.updateMemo(current)
+                isEditMode.postValue(false)
+            }
+        } else {
+            detailModel.getOneMemo(memoId) { current ->
+                current.title = binding.textTitle.text.toString()
+                current.content = binding.textContent.text.toString()
+                detailModel.updateMemo(current)
+                isEditMode.postValue(false)
+            }
+        }
+        this.findNavController().navigate(R.id.homeFragment)
+    }
 }
