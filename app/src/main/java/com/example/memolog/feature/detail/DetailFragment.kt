@@ -104,23 +104,12 @@ class DetailFragment : Fragment(){
 
         binding.editBtn.setOnClickListener {
             detailModel.getOneMemo(memoId) { current ->
-                val updatedMemo = Memo(
-                    id = memoId,
-                    title = binding.editTitle.text.toString(),
-                    content = binding.editContent.text.toString(),
-                    isFavorite = current.isFavorite,
-                    isLocked = current.isLocked,
-                    password = current.password,
-                    isBookmark = current.isBookmark,
-                    createdTime = current.createdTime,
-                    updatedTime = currentDate
-                )
-                val result = detailModel.updateMemo(updatedMemo)
-                Log.d("MemoDebug", "updateMemo 후 result : $result")
+                current.title = binding.editTitle.text.toString()
+                current.content = binding.editContent.text.toString()
+                detailModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
         }
-
     }
 
     private fun initViewModel(){
