@@ -14,6 +14,7 @@ class DetailModel(private val memoRepository: MemoRepository): ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             Log.d("MemoDebug", "DetailModel::getOneMemo-()")
             val memo = memoRepository.selectOne(id)
+            Log.d("MemoDebug", "memo: $memo")
             resultMemo.invoke(memo)
         }
     }

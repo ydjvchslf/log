@@ -10,5 +10,6 @@ class MemoRepository {
     suspend fun deleteMemo() = appDBInstant.deleteAll()
     suspend fun selectOne(id: Long) = appDBInstant.selectOne(id)
     suspend fun updateMemo(memo: Memo) = appDBInstant.updateMemo(memo)
+    suspend fun setFavorite(id: Long, state: Boolean) = appDBInstant.updateFavorite(id, state)
     fun getAllMemo() = appDBInstant.getAll()
 }

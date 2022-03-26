@@ -15,4 +15,8 @@ data class Memo(
     @ColumnInfo var isBookmark: Boolean,
     @ColumnInfo var createdTime: String,
     @ColumnInfo var updatedTime: String,
-)
+){
+    override fun toString(): String {
+        return "id: $id, isFavorite: $isFavorite"
+    }
+}

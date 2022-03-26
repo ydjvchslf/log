@@ -2,17 +2,19 @@ package com.example.memolog.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.BindingAdapter
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.memolog.R
 import com.example.memolog.databinding.MemoItemBinding
 import com.example.memolog.feature.home.HomeFragmentDirections
 import com.example.memolog.model.MemoModel
+import com.example.memolog.repository.MemoRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.logging.Handler
 
 class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
@@ -39,20 +41,41 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
         holder.bind(memoList[position])
     }
 
-    class MyViewHolder(val binding: MemoItemBinding): RecyclerView.ViewHolder(binding.root){
+    class MyViewHolder(val binding: MemoItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(memo: MemoModel){
+            val memoRepository = MemoRepository()
             binding.title.text = memo.title
 
+            if(memo.isFavorite){ // 좋아요 상태
+                binding.unlikeBtn.visibility = View.VISIBLE
+                binding.likeBtn.visibility = View.INVISIBLE
+            }else{
+                binding.unlikeBtn.visibility = View.INVISIBLE
+                binding.likeBtn.visibility = View.VISIBLE
+            }
+
+            // 상세화면 이동
             binding.title.setOnClickListener {
                 Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 //it.findNavController().navigate(R.id.action_home_to_detail)
                 it.findNavController().navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
             }
 
+            // 좋아요 버튼
             binding.likeBtn.setOnClickListener{
                 Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        memoRepository.setFavorite(memo.id, !memo.isFavorite)
+                    }
             }
 
+            // 좋아요 해제
+            binding.unlikeBtn.setOnClickListener{
+                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        memoRepository.setFavorite(memo.id, !memo.isFavorite)
+                    }
+            }
         }
     }
 }

@@ -30,6 +30,16 @@
             android:background="@drawable/ic_baseline_star_border_24" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/unlike_btn"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignLeft="@id/background"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_baseline_star_24"
+            android:visibility="invisible"/>
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/lock_btn"
             android:layout_width="15dp"
             android:layout_height="15dp"
