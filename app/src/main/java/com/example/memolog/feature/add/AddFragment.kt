@@ -1,6 +1,7 @@
 package com.example.memolog.feature.add
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat.apply
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,8 +19,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
-import com.example.memolog.currentDate
 import com.example.memolog.databinding.FragmentAddBinding
+import com.example.memolog.getCurrentTime
 import com.example.memolog.repository.MemoRepository
 import com.example.memolog.repository.entity.Memo
 
@@ -44,6 +46,7 @@ class AddFragment : Fragment(){
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,8 +69,8 @@ class AddFragment : Fragment(){
                 isLocked = false,
                 password = null,
                 isBookmark= false,
-                createdTime = currentDate,
-                updatedTime = currentDate
+                createdTime = getCurrentTime(),
+                updatedTime = getCurrentTime()
             )
             addViewModel.insertMemo(memo)
 
