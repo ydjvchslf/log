@@ -12,6 +12,9 @@ interface MemoDao {
     @Query("SELECT * FROM memo ORDER BY id DESC")
     fun getAll(): LiveData<List<Memo>>
 
+    @Query("SELECT * FROM memo WHERE isFavorite = :isFavorite")
+    fun getAllFavorite(isFavorite: Boolean): LiveData<List<Memo>>
+
     @Insert()
     suspend fun insertMemo(memo: Memo) : Long // 해당 메모의 id를 알 수 있도록 // TODO :: Int 는 왜안돼?
 
