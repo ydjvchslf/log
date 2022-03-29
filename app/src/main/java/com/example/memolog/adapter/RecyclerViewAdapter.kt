@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.memolog.R
 import com.example.memolog.databinding.MemoItemBinding
+import com.example.memolog.feature.favorite.FavoriteFragmentDirections
 import com.example.memolog.feature.home.HomeFragmentDirections
 import com.example.memolog.model.MemoModel
 import com.example.memolog.repository.MemoRepository
@@ -58,7 +61,13 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
             binding.title.setOnClickListener {
                 Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 //it.findNavController().navigate(R.id.action_home_to_detail)
-                it.findNavController().navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
+                if(it.findNavController().currentDestination?.id == R.id.homeFragment){
+                    it.findNavController().navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
+                }else if(it.findNavController().currentDestination?.id == R.id.favoriteFragment){
+                    it.findNavController().navigate(FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                }
+
+
             }
 
             // 좋아요 버튼

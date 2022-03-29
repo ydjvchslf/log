@@ -36,7 +36,7 @@ class FavoriteFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("MemoDebug", "FavoriteFragment:: onViewCreated-()")
-ㅎ
+
         val memoAdapter = RecyclerViewAdapter()
 
         binding.recyclerView.apply {
