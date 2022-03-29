@@ -36,22 +36,22 @@ class FavoriteFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("MemoDebug", "FavoriteFragment:: onViewCreated-()")
+ㅎ
+        val memoAdapter = RecyclerViewAdapter()
 
-//        val memoAdapter = RecyclerViewAdapter()
-//
-//        binding.recyclerView.apply {
-//            layoutManager = GridLayoutManager(context, 2)
-//            adapter = memoAdapter
-//            setHasFixedSize(true)
-//        }
-//
-//        favoriteViewModel.memoList.observe(viewLifecycleOwner){
-//            Log.d("MemoDebug", "FavoriteFragment:: size : ${it.size}")
-//            val memoModel = it.map {
-//                MemoModel.fromEntity(it)
-//            }
-//            memoAdapter.setListData(memoModel as ArrayList<MemoModel>)
-//        }
+        binding.recyclerView.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = memoAdapter
+            setHasFixedSize(true)
+        }
+
+        favoriteViewModel.memoList.observe(viewLifecycleOwner){
+            Log.d("MemoDebug", "FavoriteFragment:: size : ${it.size}")
+            val memoModel = it.map {
+                MemoModel.fromEntity(it)
+            }
+            memoAdapter.setListData(memoModel as ArrayList<MemoModel>)
+        }
     }
 
     private fun initViewModel(){
