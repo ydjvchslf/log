@@ -42,7 +42,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var detailModel: DetailModel
+    private lateinit var detailViewModel: DetailViewModel
     private var isEditMode = MutableLiveData(false)
     private var memoId = 0L
     private lateinit var backPressCallback: OnBackPressedCallback
@@ -66,7 +66,7 @@ class DetailFragment : Fragment() {
         val args: DetailFragmentArgs by navArgs()
         memoId = args.memoId
 
-        detailModel.getOneMemo(memoId) { memo ->
+        detailViewModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = memo.updatedTime
             binding.textTitle.text = memo.title
             binding.textContent.text = memo.content
@@ -110,13 +110,13 @@ class DetailFragment : Fragment() {
 
         // edit 버튼 -> 메모 업데이트
         binding.editBtn.setOnClickListener {
-            detailModel.getOneMemo(memoId) { current ->
+            detailViewModel.getOneMemo(memoId) { current ->
                 current.title = binding.editTitle.text.toString()
                 current.content = binding.editContent.text.toString()
                 val currentTime = getCurrentTime()
                 current.updatedTime = currentTime
 
-                detailModel.updateMemo(current)
+                detailViewModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
         }
@@ -130,7 +130,7 @@ class DetailFragment : Fragment() {
 
     private fun initViewModel() {
         viewModelFactory = ViewModelFactory(MemoRepository())
-        detailModel = ViewModelProvider(this, viewModelFactory).get(DetailModel::class.java)
+        detailViewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
     }
 
     // back key -> 메모 업데이트
@@ -156,23 +156,23 @@ class DetailFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun reviseMemo(){
         if (isEditMode.value == true) {
-            detailModel.getOneMemo(memoId) { current ->
+            detailViewModel.getOneMemo(memoId) { current ->
                 current.title = binding.editTitle.text.toString()
                 current.content = binding.editContent.text.toString()
                 val currentTime = getCurrentTime()
                 current.updatedTime = currentTime
 
-                detailModel.updateMemo(current)
+                detailViewModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
         } else {
-            detailModel.getOneMemo(memoId) { current ->
+            detailViewModel.getOneMemo(memoId) { current ->
                 current.title = binding.textTitle.text.toString()
                 current.content = binding.textContent.text.toString()
                 val currentTime = getCurrentTime()
                 current.updatedTime = currentTime
 
-                detailModel.updateMemo(current)
+                detailViewModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
         }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DetailModel(private val memoRepository: MemoRepository): ViewModel() {
+class DetailViewModel(private val memoRepository: MemoRepository): ViewModel() {
 
     fun getOneMemo(id: Long, resultMemo: ((Memo) -> Unit)) {
         CoroutineScope(Dispatchers.IO).launch {
