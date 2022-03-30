@@ -12,6 +12,7 @@ import com.example.memolog.R
 import com.example.memolog.databinding.MemoItemBinding
 import com.example.memolog.feature.favorite.FavoriteFragmentDirections
 import com.example.memolog.feature.home.HomeFragmentDirections
+import com.example.memolog.feature.search.SearchFragmentDirections
 import com.example.memolog.model.MemoModel
 import com.example.memolog.repository.MemoRepository
 import kotlinx.coroutines.CoroutineScope
@@ -24,8 +25,13 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
     var memoList = ArrayList<MemoModel>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setListData(data: ArrayList<MemoModel>){
+    fun setListData(data: ArrayList<MemoModel>) {
         this.memoList = data
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        this.memoList.clear()
         notifyDataSetChanged()
     }
 
@@ -44,15 +50,15 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
         holder.bind(memoList[position])
     }
 
-    class MyViewHolder(val binding: MemoItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(memo: MemoModel){
+    class MyViewHolder(val binding: MemoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(memo: MemoModel) {
             val memoRepository = MemoRepository()
             binding.title.text = memo.title
 
-            if(memo.isFavorite){ // 좋아요 상태
+            if (memo.isFavorite) { // 좋아요 상태
                 binding.unlikeBtn.visibility = View.VISIBLE
                 binding.likeBtn.visibility = View.INVISIBLE
-            }else{
+            } else {
                 binding.unlikeBtn.visibility = View.INVISIBLE
                 binding.likeBtn.visibility = View.VISIBLE
             }
@@ -61,29 +67,34 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
             binding.title.setOnClickListener {
                 Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 //it.findNavController().navigate(R.id.action_home_to_detail)
-                if(it.findNavController().currentDestination?.id == R.id.homeFragment){
-                    it.findNavController().navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
-                }else if(it.findNavController().currentDestination?.id == R.id.favoriteFragment){
-                    it.findNavController().navigate(FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                if (it.findNavController().currentDestination?.id == R.id.homeFragment) {
+                    it.findNavController()
+                        .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
+                } else if (it.findNavController().currentDestination?.id == R.id.favoriteFragment) {
+                    it.findNavController()
+                        .navigate(FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                } else if (it.findNavController().currentDestination?.id == R.id.searchFragment) {
+                    it.findNavController()
+                        .navigate(SearchFragmentDirections.actionSearchToDetail(memo.id))
                 }
 
-
-            }
-
-            // 좋아요 버튼
-            binding.likeBtn.setOnClickListener{
-                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
+                // 좋아요 버튼
+                binding.likeBtn.setOnClickListener {
+                    Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
+                        .show()
                     CoroutineScope(Dispatchers.IO).launch {
                         memoRepository.setFavorite(memo.id, !memo.isFavorite)
                     }
-            }
+                }
 
-            // 좋아요 해제
-            binding.unlikeBtn.setOnClickListener{
-                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
+                // 좋아요 해제
+                binding.unlikeBtn.setOnClickListener {
+                    Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
+                        .show()
                     CoroutineScope(Dispatchers.IO).launch {
                         memoRepository.setFavorite(memo.id, !memo.isFavorite)
                     }
+                }
             }
         }
     }
