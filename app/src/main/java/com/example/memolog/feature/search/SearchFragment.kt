@@ -1,11 +1,18 @@
 package com.example.memolog.feature.search
 
+import android.app.AppOpsManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.memolog.ViewModelFactory
@@ -34,6 +41,10 @@ class SearchFragment: Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         binding.editText.requestFocus()
+
+        // 키보드 보이기
+        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(binding.editText, InputMethodManager.SHOW_IMPLICIT)
 
         binding.cancelBtn.setOnClickListener {
             Toast.makeText(binding.root.context, "취소버튼 클릭", Toast.LENGTH_SHORT).show()
