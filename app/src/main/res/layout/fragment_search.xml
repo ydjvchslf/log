@@ -29,12 +29,16 @@
                 android:background="@drawable/ic_baseline_search_24"/>
 
             <EditText
+                android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:gravity="center_vertical"
-                android:text="검색할 단어 입력"
-                android:background="@drawable/transparent_rect"/>
+                android:hint="검색할 단어"
+                android:background="@drawable/transparent_rect" >
+
+            <requestFocus />
+            </EditText>
 
         </LinearLayout>
 

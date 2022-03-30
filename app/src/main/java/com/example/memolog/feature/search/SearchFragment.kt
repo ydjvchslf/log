@@ -1,6 +1,7 @@
 package com.example.memolog.feature.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,8 @@ class SearchFragment: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.editText.requestFocus()
 
         binding.cancelBtn.setOnClickListener {
             Toast.makeText(binding.root.context, "취소버튼 클릭", Toast.LENGTH_SHORT).show()
