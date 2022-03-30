@@ -22,8 +22,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/like_btn"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignLeft="@id/background"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
@@ -31,13 +31,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/unlike_btn"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignLeft="@id/background"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/ic_baseline_star_24"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/lock_btn"
@@ -65,7 +65,7 @@
             android:id="@+id/title"
             style="@style/Text.ItemTitle"
             android:layout_width="120dp"
-            android:layout_height="80dp"
+            android:layout_height="70dp"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:padding="20dp"

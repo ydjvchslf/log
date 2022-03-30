@@ -25,4 +25,11 @@ class DetailViewModel(private val memoRepository: MemoRepository): ViewModel() {
             memoRepository.updateMemo(memo)
         }
     }
+
+    fun deleteMemo(id: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("MemoDebug", "DetailModel::deleteMemo-()")
+            memoRepository.deleteOne(id)
+        }
+    }
 }

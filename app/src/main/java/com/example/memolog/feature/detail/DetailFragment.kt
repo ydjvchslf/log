@@ -1,5 +1,6 @@
 package com.example.memolog.feature.detail
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -76,6 +77,7 @@ class DetailFragment : Fragment() {
             if (isEditMode) {
                 Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.VISIBLE
+                binding.deleteBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
 
@@ -85,6 +87,7 @@ class DetailFragment : Fragment() {
                 Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.INVISIBLE
                 binding.editTitle.visibility = View.INVISIBLE
+                binding.deleteBtn.visibility = View.INVISIBLE
                 binding.editContent.visibility = View.INVISIBLE
 
                 binding.textTitle.visibility = View.VISIBLE
@@ -147,6 +150,20 @@ class DetailFragment : Fragment() {
 
                 isEditMode.postValue(false)
             }
+        }
+
+        // delete 버튼
+        binding.deleteBtn.setOnClickListener {
+            AlertDialog.Builder(context)
+                .setMessage("정말 삭제하시겠습니까?\n복구는 불가합니다😭")
+                .setPositiveButton("yes") { _, _ ->
+                    detailViewModel.deleteMemo(memoId)
+                    this.findNavController().navigate(R.id.homeFragment)
+                }
+                .setNegativeButton("no") { _, _ ->
+                    // do nothing
+                }
+                .show()
         }
 
         // back 버튼 -> 메모 업데이트

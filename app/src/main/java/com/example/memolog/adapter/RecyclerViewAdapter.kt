@@ -1,6 +1,7 @@
 package com.example.memolog.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,6 +81,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
 
                 // 좋아요 버튼
                 binding.likeBtn.setOnClickListener {
+                    Log.d("MemoDebug", "좋아요 버튼")
                     Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
                         .show()
                     CoroutineScope(Dispatchers.IO).launch {
@@ -89,6 +91,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
 
                 // 좋아요 해제
                 binding.unlikeBtn.setOnClickListener {
+                    Log.d("MemoDebug", "좋아요 해제")
                     Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
                         .show()
                     CoroutineScope(Dispatchers.IO).launch {
