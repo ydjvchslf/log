@@ -72,7 +72,9 @@
             app:layout_constraintBottom_toTopOf="@id/line2"
             android:text="제목 - EditText"
             android:background="@null"
-            android:visibility="invisible"/>
+            android:visibility="invisible" >
+            <requestFocus/>
+        </EditText>
 
         <View
             android:id="@+id/line2"
@@ -115,7 +117,9 @@
                     android:gravity="top"
                     android:layout_margin="5dp"
                     android:text="내용"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" >
+                    <requestFocus/>
+                </EditText>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

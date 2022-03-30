@@ -100,12 +100,30 @@ class DetailFragment : Fragment() {
             isEditMode.value = true
             binding.editTitle.setText(binding.textTitle.text.toString())
             binding.editContent.setText(binding.textContent.text.toString())
+
+            // 포커스 & 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
+            binding.editTitle.apply {
+                setSelection(binding.textTitle.length())
+                requestFocus()
+            }
+
+            val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
         }
 
         binding.textContent.setOnClickListener {
             isEditMode.value = true
             binding.editTitle.setText(binding.textTitle.text.toString())
             binding.editContent.setText(binding.textContent.text.toString())
+
+            // 포커스 & 키보드 올리기
+            binding.editContent.apply {
+                setSelection(binding.textContent.length())
+                requestFocus()
+            }
+
+            val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(binding.editContent, InputMethodManager.SHOW_IMPLICIT)
         }
 
         // edit 버튼 -> 메모 업데이트
