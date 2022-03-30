@@ -14,10 +14,4 @@ class FavoriteViewModel(private val memoRepository: MemoRepository): ViewModel()
 
     var memoList : LiveData<List<Memo>> = memoRepository.getAllFavorite(true)
 
-    fun getAllFavoriteMemos(){
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.d("MemoDebug", "FavoriteViewModel::getAllFavoriteMemos-()")
-            memoList = memoRepository.getAllFavorite(true)
-        }
-    }
 }

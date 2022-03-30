@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,10 @@ import com.example.memolog.feature.detail.DetailViewModel
 import com.example.memolog.feature.home.HomeFragment
 import com.example.memolog.feature.home.HomeFragmentDirections
 import com.example.memolog.repository.MemoRepository
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class SearchFragment: Fragment(){
     private lateinit var binding: FragmentSearchBinding
@@ -32,7 +38,7 @@ class SearchFragment: Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
 
@@ -50,6 +56,8 @@ class SearchFragment: Fragment(){
         val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(binding.editText, InputMethodManager.SHOW_IMPLICIT)
 
+        binding.editText.addTextChangedListener(textWatcher)
+
         binding.cancelBtn.setOnClickListener {
             it.findNavController().navigate(R.id.homeFragment)
         }
@@ -59,4 +67,41 @@ class SearchFragment: Fragment(){
         viewModelFactory = ViewModelFactory(MemoRepository())
         searchViewModel = ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
     }
+
+    val textChange: PublishSubject<String> = PublishSubject.create()
+
+    private val textWatcher = object : TextWatcher {
+
+        override fun afterTextChanged(s: Editable?) {
+            Log.d("MemoDebug", "SearchFragment::afterTextChanged-()")
+            textChange.onNext(s.toString())
+
+            textChange
+                .debounce(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext { keyword ->
+                    //binding.textView.text = it
+                    if(keyword.isEmpty()){
+                        return@doOnNext
+                    }
+                    searchViewModel.memoList.observe(viewLifecycleOwner){ memoList ->
+                        Log.d("MemoDebug", "memoList.size : ${memoList?.size}")
+                        var temp = 0
+                        memoList?.forEach { memo ->
+                            val result = memo.content.contains(keyword)
+                            Log.d("MemoDebug", "memo.id : ${memo.id}")
+                            Log.d("MemoDebug", "검색어 내용에 포함? : $result")
+                            temp += 1
+                        }
+                        Log.d("MemoDebug", "temp : $temp")
+                    }
+
+                }
+                .subscribe()
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+    }
+
 }
