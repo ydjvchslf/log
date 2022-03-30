@@ -15,9 +15,13 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
 import com.example.memolog.databinding.FragmentSearchBinding
 import com.example.memolog.feature.detail.DetailViewModel
+import com.example.memolog.feature.home.HomeFragment
+import com.example.memolog.feature.home.HomeFragmentDirections
 import com.example.memolog.repository.MemoRepository
 
 class SearchFragment: Fragment(){
@@ -47,7 +51,7 @@ class SearchFragment: Fragment(){
         inputMethodManager.showSoftInput(binding.editText, InputMethodManager.SHOW_IMPLICIT)
 
         binding.cancelBtn.setOnClickListener {
-            Toast.makeText(binding.root.context, "취소버튼 클릭", Toast.LENGTH_SHORT).show()
+            it.findNavController().navigate(R.id.homeFragment)
         }
     }
 
