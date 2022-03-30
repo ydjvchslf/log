@@ -74,6 +74,7 @@ class DetailFragment : Fragment() {
 
         isEditMode.observe(viewLifecycleOwner) { isEditMode ->
             if (isEditMode) {
+                Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
@@ -81,6 +82,7 @@ class DetailFragment : Fragment() {
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
             } else {
+                Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.INVISIBLE
                 binding.editTitle.visibility = View.INVISIBLE
                 binding.editContent.visibility = View.INVISIBLE
@@ -92,7 +94,7 @@ class DetailFragment : Fragment() {
                 binding.textTitle.text = binding.editTitle.text
                 binding.textContent.text = binding.editContent.text
 
-                // TODO:: 키보드 내리기 추가할 것
+                // TODO:: 키보드 내리기 이곳에 있었을때 왜 안됐지
             }
         }
 
@@ -135,6 +137,14 @@ class DetailFragment : Fragment() {
                 current.updatedTime = currentTime
 
                 detailViewModel.updateMemo(current)
+
+                // 키보드 내리기
+                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(
+                    activity?.currentFocus?.windowToken,
+                    InputMethodManager.HIDE_IMPLICIT_ONLY
+                )
+
                 isEditMode.postValue(false)
             }
         }
