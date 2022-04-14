@@ -78,25 +78,25 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
                     it.findNavController()
                         .navigate(SearchFragmentDirections.actionSearchToDetail(memo.id))
                 }
+            }
 
-                // 좋아요 버튼
-                binding.likeBtn.setOnClickListener {
-                    Log.d("MemoDebug", "좋아요 버튼")
-                    Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
-                        .show()
-                    CoroutineScope(Dispatchers.IO).launch {
-                        memoRepository.setFavorite(memo.id, !memo.isFavorite)
-                    }
+            // 좋아요 버튼
+            binding.likeBtn.setOnClickListener {
+                Log.d("MemoDebug", "좋아요 버튼")
+                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
+                    .show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    memoRepository.setFavorite(memo.id, !memo.isFavorite)
                 }
+            }
 
-                // 좋아요 해제
-                binding.unlikeBtn.setOnClickListener {
-                    Log.d("MemoDebug", "좋아요 해제")
-                    Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
-                        .show()
-                    CoroutineScope(Dispatchers.IO).launch {
-                        memoRepository.setFavorite(memo.id, !memo.isFavorite)
-                    }
+            // 좋아요 해제
+            binding.unlikeBtn.setOnClickListener {
+                Log.d("MemoDebug", "좋아요 해제")
+                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
+                    .show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    memoRepository.setFavorite(memo.id, !memo.isFavorite)
                 }
             }
         }
