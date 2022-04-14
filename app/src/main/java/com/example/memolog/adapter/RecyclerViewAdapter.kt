@@ -68,15 +68,19 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
             binding.title.setOnClickListener {
                 Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 //it.findNavController().navigate(R.id.action_home_to_detail)
-                if (it.findNavController().currentDestination?.id == R.id.homeFragment) {
-                    it.findNavController()
-                        .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
-                } else if (it.findNavController().currentDestination?.id == R.id.favoriteFragment) {
-                    it.findNavController()
-                        .navigate(FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
-                } else if (it.findNavController().currentDestination?.id == R.id.searchFragment) {
-                    it.findNavController()
-                        .navigate(SearchFragmentDirections.actionSearchToDetail(memo.id))
+                when (it.findNavController().currentDestination?.id) {
+                    R.id.homeFragment -> {
+                        it.findNavController()
+                            .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
+                    }
+                    R.id.favoriteFragment -> {
+                        it.findNavController()
+                            .navigate(FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                    }
+                    R.id.searchFragment -> {
+                        it.findNavController()
+                            .navigate(SearchFragmentDirections.actionSearchToDetail(memo.id))
+                    }
                 }
             }
 
