@@ -45,11 +45,12 @@
             app:destination="@id/detailFragment" />
     </fragment>
 
+    <!--
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.example.memolog.feature.setting.SettingFragment"
         android:label="SettingFragment"
-        tools:layout="@layout/fragment_setting"/>
+        tools:layout="@layout/fragment_setting"/> -->
 
     <fragment
         android:id="@+id/detailFragment"

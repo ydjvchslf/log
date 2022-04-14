@@ -66,7 +66,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
 
             // 상세화면 이동
             binding.title.setOnClickListener {
-                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 //it.findNavController().navigate(R.id.action_home_to_detail)
                 when (it.findNavController().currentDestination?.id) {
                     R.id.homeFragment -> {
@@ -87,8 +87,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
             // 좋아요 버튼
             binding.likeBtn.setOnClickListener {
                 Log.d("MemoDebug", "좋아요 버튼")
-                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
-                    .show()
+                //Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 CoroutineScope(Dispatchers.IO).launch {
                     memoRepository.setFavorite(memo.id, !memo.isFavorite)
                 }
@@ -97,8 +96,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
             // 좋아요 해제
             binding.unlikeBtn.setOnClickListener {
                 Log.d("MemoDebug", "좋아요 해제")
-                Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT)
-                    .show()
+                //Toast.makeText(binding.root.context, "id : ${memo.id}", Toast.LENGTH_SHORT).show()
                 CoroutineScope(Dispatchers.IO).launch {
                     memoRepository.setFavorite(memo.id, !memo.isFavorite)
                 }
