@@ -17,6 +17,6 @@ data class Memo(
     @ColumnInfo var updatedTime: String,
 ){
     override fun toString(): String {
-        return "id: $id, isFavorite: $isFavorite"
+        return "id: $id, isFavorite: $isFavorite, isLocked: $isLocked, password: $password"
     }
 }

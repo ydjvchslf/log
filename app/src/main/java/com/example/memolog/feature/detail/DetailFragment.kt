@@ -20,8 +20,12 @@ import android.view.inputmethod.InputMethodManager
 import android.os.Build
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 
 import androidx.navigation.fragment.findNavController
+import com.example.memolog.feature.favorite.FavoriteFragmentDirections
+import com.example.memolog.feature.home.HomeFragmentDirections
+import com.example.memolog.feature.search.SearchFragmentDirections
 import com.example.memolog.getCurrentTime
 
 
@@ -31,6 +35,7 @@ class DetailFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var detailViewModel: DetailViewModel
     private var isEditMode = MutableLiveData(false)
+    private var isLock = MutableLiveData(false)
     private var memoId = 0L
     private lateinit var backPressCallback: OnBackPressedCallback
 
@@ -57,10 +62,12 @@ class DetailFragment : Fragment() {
             binding.updatedTime.text = makeSimpleDate(memo.updatedTime)
             binding.textTitle.text = memo.title
             binding.textContent.text = memo.content
+            isLock.postValue(memo.isLocked)
+            Log.d("MemoDebug", "onViewCreated-() : ${isLock.value}")
         }
 
         isEditMode.observe(viewLifecycleOwner) { isEditMode ->
-            if (isEditMode) {
+            if (isEditMode) { // 수정모드
                 Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.VISIBLE
                 binding.deleteBtn.visibility = View.VISIBLE
@@ -69,7 +76,17 @@ class DetailFragment : Fragment() {
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
-            } else {
+
+                if(isLock.value == true){ // 잠금상태
+                    Log.d("MemoDebug", "isLock : ${isLock.value}")
+                    binding.unlockBtn.visibility = View.VISIBLE
+                    binding.lockBtn.visibility = View.GONE
+                }else if(isLock.value == false){ // 해제상태
+                    Log.d("MemoDebug", "isLock : ${isLock.value}")
+                    binding.unlockBtn.visibility = View.GONE
+                    binding.lockBtn.visibility = View.VISIBLE
+                }
+            } else { // 수정모드 해제
                 Log.d("MemoDebug", "isEditMode : $isEditMode")
                 binding.editBtn.visibility = View.INVISIBLE
                 binding.editTitle.visibility = View.INVISIBLE
@@ -83,9 +100,25 @@ class DetailFragment : Fragment() {
                 binding.textTitle.text = binding.editTitle.text
                 binding.textContent.text = binding.editContent.text
 
+                // 잠금, 해제버튼 모두 INVISIBLE
+                binding.unlockBtn.visibility = View.INVISIBLE
+                binding.lockBtn.visibility = View.INVISIBLE
+
                 // TODO:: 키보드 내리기 이곳에 있었을때 왜 안됐지
             }
         }
+
+//        isLock.observe(viewLifecycleOwner){ isLock ->
+//            if(isLock && isEditMode.value == true){ // 잠금상태
+//                Log.d("MemoDebug", "isLock : $isLock")
+//                binding.unlockBtn.visibility = View.VISIBLE
+//                binding.lockBtn.visibility = View.GONE
+//            }else if(!isLock && isEditMode.value == true){ // 해제상태
+//                Log.d("MemoDebug", "isLock : $isLock")
+//                binding.unlockBtn.visibility = View.GONE
+//                binding.lockBtn.visibility = View.VISIBLE
+//            }
+//        }
 
         binding.textTitle.setOnClickListener {
             isEditMode.value = true
