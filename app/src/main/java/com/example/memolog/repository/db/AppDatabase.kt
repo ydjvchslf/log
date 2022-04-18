@@ -1,7 +1,6 @@
 package com.example.memolog.repository.db
 
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.memolog.repository.entity.Memo
 import com.example.memolog.repository.dao.MemoDao

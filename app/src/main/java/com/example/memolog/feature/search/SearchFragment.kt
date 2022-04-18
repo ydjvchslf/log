@@ -1,10 +1,7 @@
 package com.example.memolog.feature.search
 
-import android.app.AppOpsManager
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,9 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -23,12 +17,8 @@ import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
 import com.example.memolog.adapter.RecyclerViewAdapter
 import com.example.memolog.databinding.FragmentSearchBinding
-import com.example.memolog.feature.detail.DetailViewModel
-import com.example.memolog.feature.home.HomeFragment
-import com.example.memolog.feature.home.HomeFragmentDirections
 import com.example.memolog.model.MemoModel
 import com.example.memolog.repository.MemoRepository
-import com.example.memolog.repository.entity.Memo
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.*

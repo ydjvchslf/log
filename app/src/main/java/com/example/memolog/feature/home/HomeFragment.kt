@@ -7,21 +7,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.memolog.R
 import com.example.memolog.ViewModelFactory
 import com.example.memolog.adapter.RecyclerViewAdapter
 import com.example.memolog.databinding.FragmentHomeBinding
 import com.example.memolog.model.MemoModel
 import com.example.memolog.repository.MemoRepository
-import com.example.memolog.repository.entity.Memo
 
 class HomeFragment : Fragment(){
 

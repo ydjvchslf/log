@@ -2,7 +2,6 @@ package com.example.memolog
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.view.isGone
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.memolog.databinding.ActivityMainBinding

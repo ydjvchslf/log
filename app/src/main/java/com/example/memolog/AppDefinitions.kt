@@ -2,7 +2,6 @@ package com.example.memolog
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.MutableLiveData
 import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
