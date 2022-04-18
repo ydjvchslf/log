@@ -54,7 +54,7 @@ class DetailFragment : Fragment() {
         memoId = args.memoId
 
         detailViewModel.getOneMemo(memoId) { memo ->
-            binding.updatedTime.text = memo.updatedTime
+            binding.updatedTime.text = makeSimpleDate(memo.updatedTime)
             binding.textTitle.text = memo.title
             binding.textContent.text = memo.content
         }
@@ -208,5 +208,9 @@ class DetailFragment : Fragment() {
             }
         }
         this.findNavController().navigate(R.id.homeFragment)
+    }
+
+    private fun makeSimpleDate(before: String): String {
+        return before.split("T")[0]
     }
 }
