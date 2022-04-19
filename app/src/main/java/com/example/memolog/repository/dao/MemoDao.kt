@@ -32,4 +32,7 @@ interface MemoDao {
 
     @Query("UPDATE memo SET isFavorite = :isFavorite WHERE id = :id")
     suspend fun updateFavorite(id: Long, isFavorite: Boolean)
+
+    @Query("UPDATE memo SET password = :pw, isLocked = :isLock WHERE id = :id")
+    suspend fun updateLock(id: Long, pw: String, isLock: Boolean)
 }

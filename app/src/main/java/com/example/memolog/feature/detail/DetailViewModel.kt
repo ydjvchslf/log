@@ -32,4 +32,12 @@ class DetailViewModel(private val memoRepository: MemoRepository): ViewModel() {
             memoRepository.deleteOne(id)
         }
     }
+
+    fun lockMemo(id: Long, pw: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("MemoDebug", "DetailModel::lockMemo-()")
+            memoRepository.setLock(id, pw)
+            getOneMemo(id){ }
+        }
+    }
 }

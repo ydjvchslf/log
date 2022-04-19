@@ -18,6 +18,8 @@ import com.example.memolog.repository.MemoRepository
 import android.view.inputmethod.InputMethodManager
 
 import android.os.Build
+import android.text.InputType
+import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
@@ -38,6 +40,7 @@ class DetailFragment : Fragment() {
     private var isLock = MutableLiveData(false)
     private var memoId = 0L
     private lateinit var backPressCallback: OnBackPressedCallback
+    private var password = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +67,11 @@ class DetailFragment : Fragment() {
             binding.textContent.text = memo.content
             isLock.postValue(memo.isLocked)
             Log.d("MemoDebug", "onViewCreated-() : ${isLock.value}")
+
+            if(isLock.value == true){
+                password = memo.password.toString()
+                Log.d("MemoDebug", "password : $password")
+            }
         }
 
         isEditMode.observe(viewLifecycleOwner) { isEditMode ->
@@ -108,6 +116,7 @@ class DetailFragment : Fragment() {
             }
         }
 
+        //TODO:: DEBUG 모드 두 번타는거 이해X
 //        isLock.observe(viewLifecycleOwner){ isLock ->
 //            if(isLock && isEditMode.value == true){ // 잠금상태
 //                Log.d("MemoDebug", "isLock : $isLock")
@@ -185,6 +194,18 @@ class DetailFragment : Fragment() {
                 .show()
         }
 
+        isLock.observe(viewLifecycleOwner){ isLock ->
+            if(isLock){ // 잠금 해제
+                binding.unlockBtn.setOnClickListener {
+
+                }
+            }else{ // 잠금 설정
+                binding.lockBtn.setOnClickListener {
+                    showFirstLockDialog()
+                }
+            }
+        }
+
         // back 버튼 -> 메모 업데이트
         binding.backBtn.setOnClickListener {
             //memoId
@@ -245,5 +266,58 @@ class DetailFragment : Fragment() {
 
     private fun makeSimpleDate(before: String): String {
         return before.split("T")[0]
+    }
+
+    private fun showFirstLockDialog(){
+        if (binding.inputPw.parent != null){
+                (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
+                binding.inputPw.visibility = View.VISIBLE
+        }
+
+        AlertDialog.Builder(context)
+            .setMessage("비밀번호 숫자 네자리를 설정해주세요")
+            .setView(binding.inputPw)
+            .setPositiveButton("yes") { _, _ ->
+                val firstPw = binding.inputPw.text.toString()
+                Log.d("MemoDebug", "firstPw: $firstPw")
+                showSecondLockDialog(firstPw)
+            }
+            .setNegativeButton("cancel") { _, _ ->
+                binding.inputPw.text = null
+            }
+            .show()
+    }
+
+    private fun showSecondLockDialog(firstPw: String){
+        if (binding.inputPw.parent != null){
+            (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
+            binding.inputPw.text = null
+            binding.inputPw.visibility = View.VISIBLE
+        }
+
+        AlertDialog.Builder(context)
+            .setMessage("비밀번호를 다시 입력해주세요")
+            .setView(binding.inputPw)
+            .setPositiveButton("yes") { _, _ ->
+                val secondPw = binding.inputPw.text.toString()
+                Log.d("MemoDebug", "secondPw: $secondPw")
+                if(firstPw == secondPw){
+                    Log.d("MemoDebug", "비밀번호 일치")
+                    // 비밀번호 업데이트
+                    detailViewModel.lockMemo(memoId, secondPw)
+                }else{
+                    Log.d("MemoDebug", "비밀번호 불일치")
+                    binding.inputPw.text = null
+                    showSecondLockDialog(firstPw)
+                }
+            }
+            .setNegativeButton("cancel") { _, _ ->
+                binding.inputPw.text = null
+            }
+            .setNeutralButton("재설정하기"){_, _ ->
+                binding.inputPw.text = null
+                showFirstLockDialog()
+            }
+            .show()
     }
 }
