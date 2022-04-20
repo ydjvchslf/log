@@ -35,4 +35,7 @@ interface MemoDao {
 
     @Query("UPDATE memo SET password = :pw, isLocked = :isLock WHERE id = :id")
     suspend fun updateLock(id: Long, pw: String, isLock: Boolean)
+
+    @Query("UPDATE memo SET password = :pw, isLocked = :isLock WHERE id = :id")
+    suspend fun updateUnlock(id: Long, pw: String?, isLock: Boolean)
 }

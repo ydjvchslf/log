@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import android.os.Build
 import android.text.InputType
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
@@ -89,6 +90,12 @@ class DetailFragment : Fragment() {
                     Log.d("MemoDebug", "isLock : ${isLock.value}")
                     binding.unlockBtn.visibility = View.VISIBLE
                     binding.lockBtn.visibility = View.GONE
+
+                    binding.unlockBtn.setOnClickListener {
+                        Log.d("MemoDebug", "메모 잠금해제 아이콘 클릭")
+                        showUnlockDialog(memoId)
+                    }
+
                 }else if(isLock.value == false){ // 해제상태
                     Log.d("MemoDebug", "isLock : ${isLock.value}")
                     binding.unlockBtn.visibility = View.GONE
@@ -317,6 +324,37 @@ class DetailFragment : Fragment() {
             .setNeutralButton("재설정하기"){_, _ ->
                 binding.inputPw.text = null
                 showFirstLockDialog()
+            }
+            .show()
+    }
+
+    private fun showUnlockDialog(id: Long){
+        if (binding.inputPw.parent != null){
+            (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
+            binding.inputPw.visibility = View.VISIBLE
+        }
+
+        AlertDialog.Builder(context)
+            .setMessage("잠금해제를 위해 비밀번호를 적어주세요!")
+            .setView(binding.inputPw)
+            .setPositiveButton("yes") { _, _ ->
+                val unlockPw = binding.inputPw.text.toString()
+                Log.d("MemoDebug", "해제할 비밀번호: $unlockPw")
+                detailViewModel.getOneMemo(id){ memo ->
+                    if(memo.password == unlockPw){
+                        detailViewModel.unlockMemo(id)
+                    }else{
+                        Log.d("MemoDebug", "memo.password: ${memo.password}," +
+                                "사용자가 입력한 pw: $unlockPw, 일치X")
+                        binding.inputPw.text = null
+                        isLock.postValue(false)
+                        return@getOneMemo
+                    }
+                }
+
+            }
+            .setNegativeButton("cancel") { _, _ ->
+                binding.inputPw.text = null
             }
             .show()
     }

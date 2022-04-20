@@ -40,4 +40,12 @@ class DetailViewModel(private val memoRepository: MemoRepository): ViewModel() {
             getOneMemo(id){ }
         }
     }
+
+    fun unlockMemo(id: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d("MemoDebug", "DetailModel::unlockMemo-()")
+            memoRepository.setUnlock(id)
+            getOneMemo(id){ }
+        }
+    }
 }

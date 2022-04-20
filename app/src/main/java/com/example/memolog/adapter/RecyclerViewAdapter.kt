@@ -72,36 +72,48 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
 
             // 상세화면 이동
             binding.title.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch {
-                    ////////////////////////////////////////////
-                    val memo = memoRepository.selectOne(memo.id)
-                    if(memo.isLocked) { // 잠금 상태인지 확인
-                        // 잠금이면 다이얼로그로 비번 맞는지 확인, true 면 화면 전환O, false 전환X
-                        showCheckPwDialog { password ->
-                            if (password.length == 4 && memo.password == password) {
-                                when (it.findNavController().currentDestination?.id) {
-                                    R.id.homeFragment -> {
-                                        it.findNavController()
-                                            .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
-                                    }
-                                    R.id.favoriteFragment -> {
-                                        it.findNavController()
-                                            .navigate(
-                                                FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
-                                    }
-                                    R.id.searchFragment -> {
-                                        it.findNavController()
-                                            .navigate(
-                                                SearchFragmentDirections.actionSearchToDetail(memo.id))
-                                    }
+                if(memo.isLocked) { // 잠금 상태인지 확인
+                    // 잠금이면 다이얼로그로 비번 맞는지 확인, true 면 화면 전환O, false 전환X
+                    showCheckPwDialog { password ->
+                        if (password.length == 4 && memo.password == password) {
+                            when (it.findNavController().currentDestination?.id) {
+                                R.id.homeFragment -> {
+                                    it.findNavController()
+                                        .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
                                 }
-                            }else{
-                                binding.inputPw.text = null
-                                Toast.makeText(binding.root.context, "비번틀렸슈", Toast.LENGTH_SHORT).show()
+                                R.id.favoriteFragment -> {
+                                    it.findNavController()
+                                        .navigate(
+                                            FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                                }
+                                R.id.searchFragment -> {
+                                    it.findNavController()
+                                        .navigate(
+                                            SearchFragmentDirections.actionSearchToDetail(memo.id))
+                                }
                             }
+                        }else{
+                            binding.inputPw.text = null
+                            Toast.makeText(binding.root.context, "비번틀렸슈", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    ////////////////////////////////////////////
+                }else{
+                    when (it.findNavController().currentDestination?.id) {
+                        R.id.homeFragment -> {
+                            it.findNavController()
+                                .navigate(HomeFragmentDirections.actionHomeToDetail(memo.id))
+                        }
+                        R.id.favoriteFragment -> {
+                            it.findNavController()
+                                .navigate(
+                                    FavoriteFragmentDirections.actionFavoriteToDetail(memo.id))
+                        }
+                        R.id.searchFragment -> {
+                            it.findNavController()
+                                .navigate(
+                                    SearchFragmentDirections.actionSearchToDetail(memo.id))
+                        }
+                    }
                 }
             }
 
