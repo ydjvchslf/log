@@ -71,6 +71,17 @@
             android:padding="20dp"
             tools:text="제목" />
 
+        <EditText
+            android:id="@+id/input_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:inputType="numberPassword"
+            android:hint="비밀번호 네자리를 입력해주세요"
+            android:maxLength="4"
+            android:visibility="invisible"/>
+
     </RelativeLayout>
 
 </layout>
