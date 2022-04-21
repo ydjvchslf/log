@@ -87,7 +87,7 @@ class DetailFragment : Fragment() {
                 binding.textContent.visibility = View.GONE
 
                 if(isLock.value == true){ // 잠금상태
-                    Log.d("MemoDebug", "isLock : ${isLock.value}")
+                    Log.d("MemoDebug", "isEditMode 감시 isLock : ${isLock.value}")
                     binding.unlockBtn.visibility = View.VISIBLE
                     binding.lockBtn.visibility = View.GONE
 
@@ -97,7 +97,7 @@ class DetailFragment : Fragment() {
                     }
 
                 }else if(isLock.value == false){ // 해제상태
-                    Log.d("MemoDebug", "isLock : ${isLock.value}")
+                    Log.d("MemoDebug", "isEditMode 감시 isLock : ${isLock.value}")
                     binding.unlockBtn.visibility = View.GONE
                     binding.lockBtn.visibility = View.VISIBLE
                 }
@@ -107,6 +107,8 @@ class DetailFragment : Fragment() {
                 binding.editTitle.visibility = View.INVISIBLE
                 binding.deleteBtn.visibility = View.INVISIBLE
                 binding.editContent.visibility = View.INVISIBLE
+                binding.lockBtn.visibility = View.INVISIBLE
+                binding.unlockBtn.visibility = View.INVISIBLE
 
                 binding.textTitle.visibility = View.VISIBLE
                 binding.textContent.visibility = View.VISIBLE
@@ -123,18 +125,23 @@ class DetailFragment : Fragment() {
             }
         }
 
+        binding.unlockBtn.setOnClickListener {
+            Log.d("MemoDebug", "메모 잠금해제 아이콘 클릭")
+            showUnlockDialog(memoId)
+        }
+
         //TODO:: DEBUG 모드 두 번타는거 이해X
-//        isLock.observe(viewLifecycleOwner){ isLock ->
-//            if(isLock && isEditMode.value == true){ // 잠금상태
-//                Log.d("MemoDebug", "isLock : $isLock")
-//                binding.unlockBtn.visibility = View.VISIBLE
-//                binding.lockBtn.visibility = View.GONE
-//            }else if(!isLock && isEditMode.value == true){ // 해제상태
-//                Log.d("MemoDebug", "isLock : $isLock")
-//                binding.unlockBtn.visibility = View.GONE
-//                binding.lockBtn.visibility = View.VISIBLE
-//            }
-//        }
+        isLock.observe(viewLifecycleOwner){ isLock ->
+            if(isLock && isEditMode.value == true){ // 잠금상태
+                Log.d("MemoDebug", "11111 isLock감시 isLock : $isLock")
+                binding.unlockBtn.visibility = View.VISIBLE
+                binding.lockBtn.visibility = View.GONE
+            }else if(!isLock && isEditMode.value == true){ // 해제상태
+                Log.d("MemoDebug", "22222 isLock감시 isLock : $isLock")
+                binding.unlockBtn.visibility = View.GONE
+                binding.lockBtn.visibility = View.VISIBLE
+            }
+        }
 
         binding.textTitle.setOnClickListener {
             isEditMode.value = true
@@ -202,11 +209,9 @@ class DetailFragment : Fragment() {
         }
 
         isLock.observe(viewLifecycleOwner){ isLock ->
-            if(isLock){ // 잠금 해제
-                binding.unlockBtn.setOnClickListener {
+            if(isLock){ // 잠금 상태
 
-                }
-            }else{ // 잠금 설정
+            }else{ // 잠금 해제 상태
                 binding.lockBtn.setOnClickListener {
                     showFirstLockDialog()
                 }
@@ -312,6 +317,11 @@ class DetailFragment : Fragment() {
                     Log.d("MemoDebug", "비밀번호 일치")
                     // 비밀번호 업데이트
                     detailViewModel.lockMemo(memoId, secondPw)
+
+                    Log.d("MemoDebug", "비밀번호 업뎃 후 isEditMode: ${isEditMode.value}, isLock.value: ${isLock.value}")
+                    isLock.value = true
+                    Log.d("MemoDebug", "isLock.value: ${isLock.value}")
+
                 }else{
                     Log.d("MemoDebug", "비밀번호 불일치")
                     binding.inputPw.text = null
@@ -332,6 +342,7 @@ class DetailFragment : Fragment() {
         if (binding.inputPw.parent != null){
             (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
             binding.inputPw.visibility = View.VISIBLE
+            binding.inputPw.text = null
         }
 
         AlertDialog.Builder(context)
@@ -343,6 +354,10 @@ class DetailFragment : Fragment() {
                 detailViewModel.getOneMemo(id){ memo ->
                     if(memo.password == unlockPw){
                         detailViewModel.unlockMemo(id)
+
+                        binding.inputPw.text = null
+                        isLock.postValue(false)
+
                     }else{
                         Log.d("MemoDebug", "memo.password: ${memo.password}," +
                                 "사용자가 입력한 pw: $unlockPw, 일치X")
