@@ -1,7 +1,9 @@
 package com.example.memolog.feature.detail
 
+import android.R.attr
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +29,11 @@ import androidx.navigation.findNavController
 
 import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
+import com.theartofdev.edmodo.cropper.CropImage
+import android.R.attr.data
+import android.app.Activity.RESULT_OK
+import android.net.Uri
+
 
 class DetailFragment : Fragment() {
 
@@ -78,6 +85,7 @@ class DetailFragment : Fragment() {
                 binding.deleteBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
+                binding.addPhotoBtn.visibility = View.VISIBLE
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
@@ -105,6 +113,7 @@ class DetailFragment : Fragment() {
                 binding.editContent.visibility = View.INVISIBLE
                 binding.lockBtn.visibility = View.INVISIBLE
                 binding.unlockBtn.visibility = View.INVISIBLE
+                binding.addPhotoBtn.visibility = View.INVISIBLE
 
                 binding.textTitle.visibility = View.VISIBLE
                 binding.textContent.visibility = View.VISIBLE
@@ -213,6 +222,12 @@ class DetailFragment : Fragment() {
                     showFirstLockDialog()
                 }
             }
+        }
+
+        // 사진 추가 버튼
+        binding.addPhotoBtn.setOnClickListener {
+            CropImage.activity()
+                .start(requireContext(), this)
         }
 
         // back 버튼 -> 메모 업데이트
@@ -395,5 +410,17 @@ class DetailFragment : Fragment() {
 //        // 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
 //        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 //        inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode === RESULT_OK) {
+                val resultUri: Uri = result.uri
+            } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+            }
+        }
     }
 }

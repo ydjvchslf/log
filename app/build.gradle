@@ -87,5 +87,7 @@ dependencies {
     //rxjava
     implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    // image cropper
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
 }
