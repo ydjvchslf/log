@@ -94,7 +94,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
                             }
                         }else{
                             binding.inputPw.text = null
-                            Toast.makeText(binding.root.context, "비번틀렸슈", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(binding.root.context, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else{
@@ -143,6 +143,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
                     if (binding.inputPw.parent != null) {
                         (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
                         binding.inputPw.visibility = View.VISIBLE
+                        binding.inputPw.requestFocus()
                     }
 
                     AlertDialog.Builder(binding.root.context)

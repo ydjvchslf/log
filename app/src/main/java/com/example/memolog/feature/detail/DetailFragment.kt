@@ -18,7 +18,7 @@ import com.example.memolog.repository.MemoRepository
 import android.view.inputmethod.InputMethodManager
 
 import android.os.Build
-import android.text.InputType
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -26,11 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 
 import androidx.navigation.fragment.findNavController
-import com.example.memolog.feature.favorite.FavoriteFragmentDirections
-import com.example.memolog.feature.home.HomeFragmentDirections
-import com.example.memolog.feature.search.SearchFragmentDirections
 import com.example.memolog.getCurrentTime
-
 
 class DetailFragment : Fragment() {
 
@@ -148,12 +144,13 @@ class DetailFragment : Fragment() {
             binding.editTitle.setText(binding.textTitle.text.toString())
             binding.editContent.setText(binding.textContent.text.toString())
 
-            // 포커스 & 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
+            // 자동 포커스
             binding.editTitle.apply {
                 setSelection(binding.textTitle.length())
                 requestFocus()
             }
 
+            // 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
             val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
         }
@@ -284,20 +281,34 @@ class DetailFragment : Fragment() {
         if (binding.inputPw.parent != null){
                 (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
                 binding.inputPw.visibility = View.VISIBLE
+                binding.inputPw.requestFocus()
         }
 
-        AlertDialog.Builder(context)
+        val dialogBuilder = AlertDialog.Builder(context)
             .setMessage("비밀번호 숫자 네자리를 설정해주세요")
             .setView(binding.inputPw)
             .setPositiveButton("yes") { _, _ ->
+
                 val firstPw = binding.inputPw.text.toString()
                 Log.d("MemoDebug", "firstPw: $firstPw")
-                showSecondLockDialog(firstPw)
+                if(firstPw.length != 4){
+                    Toast.makeText(context, "네 자리를 채워주세요", Toast.LENGTH_SHORT).show() // TODO :: dialog 위에 toast 띄우고 그대로 dialog 를 살릴 수 없는지?
+                    binding.inputPw.text = null
+                    return@setPositiveButton
+                }else {
+                    showSecondLockDialog(firstPw)
+                }
             }
             .setNegativeButton("cancel") { _, _ ->
                 binding.inputPw.text = null
+                return@setNegativeButton
             }
             .show()
+//
+//        val window = dialogBuilder.window
+//        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+//        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+//        binding.inputPw.showKeyboard()
     }
 
     private fun showSecondLockDialog(firstPw: String){
@@ -343,10 +354,11 @@ class DetailFragment : Fragment() {
             (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
             binding.inputPw.visibility = View.VISIBLE
             binding.inputPw.text = null
+            binding.inputPw.requestFocus()
         }
 
         AlertDialog.Builder(context)
-            .setMessage("잠금해제를 위해 비밀번호를 적어주세요!")
+            .setMessage("잠금해제를 위해 비밀번호를 적 어주세요!")
             .setView(binding.inputPw)
             .setPositiveButton("yes") { _, _ ->
                 val unlockPw = binding.inputPw.text.toString()
@@ -372,5 +384,16 @@ class DetailFragment : Fragment() {
                 binding.inputPw.text = null
             }
             .show()
+    }
+
+    private fun EditText.showKeyboard() {
+        requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
+
+//
+//        // 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
+//        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
     }
 }

@@ -173,7 +173,10 @@
             android:inputType="numberPassword"
             android:hint="숫자 네자리만 가능"
             android:maxLength="4"
-            android:visibility="gone"/>
+            android:visibility="gone" >
+
+            <requestFocus />
+        </EditText>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
