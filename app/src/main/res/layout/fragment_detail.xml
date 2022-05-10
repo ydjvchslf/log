@@ -29,7 +29,7 @@
             android:layout_marginEnd="10dp"
             android:background="@drawable/ic_baseline_add_photo_alternate_24"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/unlock_btn"
+            app:layout_constraintEnd_toStartOf="@id/lock_btn"
             android:visibility="invisible" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -40,17 +40,7 @@
             android:background="@drawable/ic_baseline_lock_open_24"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/delete_btn"
-            android:visibility="invisible" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/unlock_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_baseline_lock_24"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/delete_btn"
-            android:visibility="invisible"/>
+            android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/delete_btn"

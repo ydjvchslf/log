@@ -110,18 +110,13 @@ class DetailFragment : Fragment() {
 
                 if(isLock.value == true){ // 잠금상태
                     Log.d("MemoDebug", "isEditMode 감시 isLock : ${isLock.value}")
-                    binding.unlockBtn.visibility = View.VISIBLE
-                    binding.lockBtn.visibility = View.GONE
-
-                    binding.unlockBtn.setOnClickListener {
-                        Log.d("MemoDebug", "메모 잠금해제 아이콘 클릭")
-                        showUnlockDialog(memoId)
-                    }
+                    binding.lockBtn.visibility = View.VISIBLE
+                    binding.lockBtn.setBackgroundResource(R.drawable.ic_baseline_lock_24)
 
                 }else if(isLock.value == false){ // 해제상태
                     Log.d("MemoDebug", "isEditMode 감시 isLock : ${isLock.value}")
-                    binding.unlockBtn.visibility = View.GONE
                     binding.lockBtn.visibility = View.VISIBLE
+                    binding.lockBtn.setBackgroundResource(R.drawable.ic_baseline_lock_open_24)
                 }
             } else { // 수정모드 해제
                 Log.d("MemoDebug", "isEditMode : $isEditMode")
@@ -130,7 +125,7 @@ class DetailFragment : Fragment() {
                 binding.deleteBtn.visibility = View.INVISIBLE
                 binding.editContent.visibility = View.INVISIBLE
                 binding.lockBtn.visibility = View.INVISIBLE
-                binding.unlockBtn.visibility = View.INVISIBLE
+                //binding.unlockBtn.visibility = View.INVISIBLE
                 binding.addPhotoBtn.visibility = View.INVISIBLE
 
                 binding.textTitle.visibility = View.VISIBLE
@@ -141,28 +136,32 @@ class DetailFragment : Fragment() {
                 binding.textContent.text = binding.editContent.text
 
                 // 잠금, 해제버튼 모두 INVISIBLE
-                binding.unlockBtn.visibility = View.INVISIBLE
+                //binding.unlockBtn.visibility = View.INVISIBLE
                 binding.lockBtn.visibility = View.INVISIBLE
 
                 // TODO:: 키보드 내리기 이곳에 있었을때 왜 안됐지
             }
         }
 
-        binding.unlockBtn.setOnClickListener {
-            Log.d("MemoDebug", "메모 잠금해제 아이콘 클릭")
-            showUnlockDialog(memoId)
+        binding.lockBtn.setOnClickListener {
+            if(isLock.value == true){
+                Log.d("MemoDebug", "메모 잠금해제 아이콘 클릭")
+                showUnlockDialog(memoId)
+            }
         }
 
         //TODO:: DEBUG 모드 두 번타는거 이해X
         isLock.observe(viewLifecycleOwner){ isLock ->
             if(isLock && isEditMode.value == true){ // 잠금상태
                 Log.d("MemoDebug", "11111 isLock감시 isLock : $isLock")
-                binding.unlockBtn.visibility = View.VISIBLE
-                binding.lockBtn.visibility = View.GONE
+                binding.lockBtn.setBackgroundResource(R.drawable.ic_baseline_lock_24)
+                binding.lockBtn.setOnClickListener {
+                   showUnlockDialog(memoId)
+                }
+
             }else if(!isLock && isEditMode.value == true){ // 해제상태
                 Log.d("MemoDebug", "22222 isLock감시 isLock : $isLock")
-                binding.unlockBtn.visibility = View.GONE
-                binding.lockBtn.visibility = View.VISIBLE
+                binding.lockBtn.setBackgroundResource(R.drawable.ic_baseline_lock_open_24)
             }
         }
 
