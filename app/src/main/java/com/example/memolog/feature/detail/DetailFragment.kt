@@ -103,7 +103,7 @@ class DetailFragment : Fragment() {
                 binding.deleteBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
-                //binding.addPhotoBtn.visibility = View.VISIBLE
+                binding.addPhotoBtn.visibility = View.VISIBLE
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
@@ -243,10 +243,10 @@ class DetailFragment : Fragment() {
         }
 
         // 사진 추가 버튼
-//        binding.addPhotoBtn.setOnClickListener {
-//            CropImage.activity()
-//                .start(requireContext(), this)
-//        }
+        binding.addPhotoBtn.setOnClickListener {
+            CropImage.activity()
+                .start(requireContext(), this)
+        }
 
         // back 버튼 -> 메모 업데이트
         binding.backBtn.setOnClickListener {
@@ -337,24 +337,26 @@ class DetailFragment : Fragment() {
                 return@setNegativeButton
             }
             .show()
-//
-//        val window = dialogBuilder.window
-//        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
-//        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-//        binding.inputPw.showKeyboard()
+
+        val window = dialogBuilder.window
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+        //binding.inputPw.showKeyboard()
     }
 
     private fun showSecondLockDialog(firstPw: String){
         if (binding.inputPw.parent != null){
             (binding.inputPw.parent as ViewGroup).removeView(binding.inputPw)
             binding.inputPw.text = null
+            binding.inputPw.requestFocus()
             binding.inputPw.visibility = View.VISIBLE
         }
 
-        AlertDialog.Builder(context)
+        val dialogBuilder2 = AlertDialog.Builder(context)
             .setMessage("비밀번호를 다시 입력해주세요")
             .setView(binding.inputPw)
             .setPositiveButton("yes") { _, _ ->
+
                 val secondPw = binding.inputPw.text.toString()
                 Log.d("MemoDebug", "secondPw: $secondPw")
                 if(firstPw == secondPw){
@@ -380,6 +382,10 @@ class DetailFragment : Fragment() {
                 showFirstLockDialog()
             }
             .show()
+
+        val window = dialogBuilder2.window
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
     private fun showUnlockDialog(id: Long){
@@ -390,7 +396,7 @@ class DetailFragment : Fragment() {
             binding.inputPw.requestFocus()
         }
 
-        AlertDialog.Builder(context)
+        val dialogBuilder3 = AlertDialog.Builder(context)
             .setMessage("잠금해제를 위해 비밀번호를 적어주세요!")
             .setView(binding.inputPw)
             .setPositiveButton("yes") { _, _ ->
@@ -417,14 +423,14 @@ class DetailFragment : Fragment() {
                 binding.inputPw.text = null
             }
             .show()
+
+        val window = dialogBuilder3.window
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
     private fun EditText.showKeyboard() {
         requestFocus()
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
-
-//
 //        // 키보드 올리기 // TODO:: 함수로 따로 만들어서 빼기
 //        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 //        inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)

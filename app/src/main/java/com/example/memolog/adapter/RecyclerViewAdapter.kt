@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -146,7 +147,7 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
                         binding.inputPw.requestFocus()
                     }
 
-                    AlertDialog.Builder(binding.root.context)
+                    val dialogBuilder = AlertDialog.Builder(binding.root.context)
                         .setMessage("비밀번호를 입력해주세요")
                         .setView(binding.inputPw)
                         .setPositiveButton("yes") { _, _ ->
@@ -160,6 +161,9 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder
                             return@setNegativeButton
                         }
                         .show()
+                    val window = dialogBuilder.window
+                    window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
                 }
             }
         }

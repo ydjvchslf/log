@@ -29,7 +29,7 @@
             android:layout_marginEnd="10dp"
             android:background="@drawable/ic_baseline_add_photo_alternate_24"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/lock_btn"
+            app:layout_constraintEnd_toStartOf="@id/unlock_btn"
             android:visibility="invisible" />
 
         <androidx.appcompat.widget.AppCompatButton
