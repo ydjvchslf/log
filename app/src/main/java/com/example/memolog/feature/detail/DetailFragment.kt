@@ -33,6 +33,24 @@ import com.theartofdev.edmodo.cropper.CropImage
 import android.R.attr.data
 import android.app.Activity.RESULT_OK
 import android.net.Uri
+import android.text.Spannable
+
+import android.text.style.ImageSpan
+
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+
+import android.graphics.drawable.Drawable
+
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+
+import androidx.core.content.ContextCompat
+
+import android.widget.TextView
+import androidx.core.graphics.drawable.toBitmap
 
 
 class DetailFragment : Fragment() {
@@ -85,7 +103,7 @@ class DetailFragment : Fragment() {
                 binding.deleteBtn.visibility = View.VISIBLE
                 binding.editTitle.visibility = View.VISIBLE
                 binding.editContent.visibility = View.VISIBLE
-                binding.addPhotoBtn.visibility = View.VISIBLE
+                //binding.addPhotoBtn.visibility = View.VISIBLE
 
                 binding.textTitle.visibility = View.GONE
                 binding.textContent.visibility = View.GONE
@@ -225,10 +243,10 @@ class DetailFragment : Fragment() {
         }
 
         // 사진 추가 버튼
-        binding.addPhotoBtn.setOnClickListener {
-            CropImage.activity()
-                .start(requireContext(), this)
-        }
+//        binding.addPhotoBtn.setOnClickListener {
+//            CropImage.activity()
+//                .start(requireContext(), this)
+//        }
 
         // back 버튼 -> 메모 업데이트
         binding.backBtn.setOnClickListener {
@@ -373,7 +391,7 @@ class DetailFragment : Fragment() {
         }
 
         AlertDialog.Builder(context)
-            .setMessage("잠금해제를 위해 비밀번호를 적 어주세요!")
+            .setMessage("잠금해제를 위해 비밀번호를 적어주세요!")
             .setView(binding.inputPw)
             .setPositiveButton("yes") { _, _ ->
                 val unlockPw = binding.inputPw.text.toString()
@@ -412,12 +430,15 @@ class DetailFragment : Fragment() {
 //        inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode === RESULT_OK) {
                 val resultUri: Uri = result.uri
+                Log.d("MemoDebug", "가져온 uri: $resultUri")
+
             } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
             }
