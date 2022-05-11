@@ -1,6 +1,7 @@
 package com.example.memolog.feature.detail
 
 import android.R.attr
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -30,28 +31,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
 import com.theartofdev.edmodo.cropper.CropImage
-import android.R.attr.data
 import android.app.Activity.RESULT_OK
 import android.net.Uri
-import android.text.Spannable
-
-import android.text.style.ImageSpan
-
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-
-import android.graphics.drawable.Drawable
-
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-
-import androidx.core.content.ContextCompat
-
-import android.widget.TextView
-import androidx.core.graphics.drawable.toBitmap
-
 
 class DetailFragment : Fragment() {
 
