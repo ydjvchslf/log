@@ -1,6 +1,7 @@
 package com.example.memolog.repository.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -15,8 +16,10 @@ data class Memo(
     @ColumnInfo var isBookmark: Boolean,
     @ColumnInfo var createdTime: String,
     @ColumnInfo var updatedTime: String,
+    @ColumnInfo var image: List<String>,
 ){
     override fun toString(): String {
-        return "id: $id, isFavorite: $isFavorite, isLocked: $isLocked, password: $password"
+        return "id: $id, isFavorite: $isFavorite, isLocked: $isLocked, password: $password, " +
+                "image: $image"
     }
 }

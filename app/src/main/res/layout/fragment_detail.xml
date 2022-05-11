@@ -133,7 +133,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@color/grey_200"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/text_content"
