@@ -33,6 +33,7 @@ import com.example.memolog.getCurrentTime
 import com.theartofdev.edmodo.cropper.CropImage
 import android.app.Activity.RESULT_OK
 import android.net.Uri
+import com.bumptech.glide.Glide
 
 class DetailFragment : Fragment() {
 
@@ -422,8 +423,15 @@ class DetailFragment : Fragment() {
         if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
             if (resultCode === RESULT_OK) {
-                val resultUri: Uri = result.uri
+                val resultUri:Uri = result.uri
                 Log.d("MemoDebug", "가져온 uri: $resultUri")
+
+                Glide.with(this)
+                    .load(resultUri)
+                    .into(binding.imageView)
+                binding.imageView.visibility = View.VISIBLE
+
+
 
             } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
