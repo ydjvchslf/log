@@ -1,10 +1,9 @@
 package com.example.memolog.feature.detail
 
-import android.R.attr
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,14 +25,16 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.navigation.findNavController
 
 import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
-import com.theartofdev.edmodo.cropper.CropImage
-import android.app.Activity.RESULT_OK
-import android.net.Uri
-import com.bumptech.glide.Glide
+import android.provider.MediaStore
+import com.example.memolog.adapter.event.ImageEvent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import java.lang.Exception
+
 
 class DetailFragment : Fragment() {
 
@@ -61,6 +62,8 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("MemoDebug", "DetailFragment::onViewCreated-()")
+
+        EventBus.getDefault().register(this)
 
         val args: DetailFragmentArgs by navArgs()
         memoId = args.memoId
@@ -225,15 +228,27 @@ class DetailFragment : Fragment() {
 
         // 사진 추가 버튼
         binding.addPhotoBtn.setOnClickListener {
-            CropImage.activity()
-                .start(requireContext(), this)
+//            CropImage.activity()
+//                .start(requireContext(), this)
+
+            // 갤러리 다중이미지 선택 띄우기
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = MediaStore.Images.Media.CONTENT_TYPE
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // 다중 이미지 true
+            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            startActivityForResult(intent, 100)
+            //activity?.startActivityForResult(intent, 100)
+
         }
+
 
         // back 버튼 -> 메모 업데이트
         binding.backBtn.setOnClickListener {
             //memoId
             reviseMemo()
         }
+
+
     }
 
     private fun initViewModel() {
@@ -417,25 +432,40 @@ class DetailFragment : Fragment() {
 //        inputMethodManager.showSoftInput(binding.editTitle, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode === RESULT_OK) {
-                val resultUri:Uri = result.uri
-                Log.d("MemoDebug", "가져온 uri: $resultUri")
+    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
+        super.startActivityForResult(intent, requestCode)
 
-                Glide.with(this)
-                    .load(resultUri)
-                    .into(binding.imageView)
-                binding.imageView.visibility = View.VISIBLE
+        Log.d("MemoDebug", "DetailFragment::startActivityForResult-()")
+        Log.d("MemoDebug", "DetailFragment:: requestCode: $requestCode, data: $intent")
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: ImageEvent?) {
+        Log.d("MemoDebug", "DetailFragment::onMessageEvent-()")
+        event?.let {
+            //onActivityResult(it.requestCode, it.resultCode, it.data)
+            Log.d("MemoDebug", "DetailFragment:: imageEvent: $event")
 
-
-            } else if (resultCode === CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
+            var clipData = event.data?.clipData
+            var uriList = arrayListOf<Uri>()
+            clipData.let {
+                for (i in 0 until clipData!!.itemCount) {
+                    val imageUri: Uri = clipData.getItemAt(i).uri // 선택한 이미지들의 uri를 가져온다.
+                    try {
+                        uriList.add(imageUri) //uri를 list에 담는다.
+                        Log.d("MemoDebug", "uriList=> $uriList")
+                    } catch (e: Exception) {
+                        Log.d("MemoDebug", "e=> $e")
+                    }
+                }
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
+
+
 }
