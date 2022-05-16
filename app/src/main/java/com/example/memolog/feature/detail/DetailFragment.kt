@@ -1,6 +1,5 @@
 package com.example.memolog.feature.detail
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -31,19 +30,12 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
 import android.provider.MediaStore
-import com.example.memolog.adapter.event.ImageEvent
+import com.example.memolog.event.ImageEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Exception
-import android.content.ContentUris
 import java.io.File
-import android.graphics.BitmapFactory
-
-import android.graphics.Bitmap
-
-
-
 
 
 class DetailFragment : Fragment() {

@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
-import com.example.memolog.adapter.event.ImageEvent
+import com.example.memolog.event.ImageEvent
 import com.example.memolog.databinding.ActivityMainBinding
 import org.greenrobot.eventbus.EventBus
 

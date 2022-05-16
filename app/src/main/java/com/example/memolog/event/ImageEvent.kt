@@ -1,4 +1,4 @@
-package com.example.memolog.adapter.event
+package com.example.memolog.event
 
 import android.content.Intent
 
