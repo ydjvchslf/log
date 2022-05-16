@@ -1,8 +1,10 @@
 package com.example.memolog.feature.detail
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -34,6 +36,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Exception
+import android.content.ContentUris
+import java.io.File
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+
+
+
 
 
 class DetailFragment : Fragment() {
@@ -458,7 +468,36 @@ class DetailFragment : Fragment() {
                         Log.d("MemoDebug", "e=> $e")
                     }
                 }
+                val contentUri = clipData.getItemAt(0).uri
+                Log.d("MemoDebug", "contentUri====> $contentUri")
+
+                val filePath = getRealPathFromURI(requireContext(), contentUri)
+                Log.d("MemoDebug", "filePath====> $filePath")
+
+                val realUri = Uri.fromFile(File(filePath))
+                realUri.let {
+                    Log.d("MemoDebug", "realUri====> $realUri")
+                }
+
+                binding.imageView.setImageURI(realUri)
+                binding.imageView.visibility = View.VISIBLE
+
+
             }
+        }
+    }
+
+    // content Uri -> Path(파일경로)
+    private fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
+        var cursor: Cursor? = null
+        return try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri!!, proj, null, null, null)
+            val columnIndex: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            cursor.getString(columnIndex)
+        } finally {
+            cursor?.close()
         }
     }
 
@@ -466,6 +505,4 @@ class DetailFragment : Fragment() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
-
-
 }
