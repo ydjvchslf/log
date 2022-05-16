@@ -14,12 +14,10 @@ class StringListTypeConverter(private val gson: Gson) {
 
     @androidx.room.TypeConverter
     fun jsonToList(value: String?): List<String> {
-        return if(value?.isEmpty() == true){ // "" 공백값
-            Log.d("MemoDebug", "value==$value==")
-            emptyList()
-        }else{
+        return try{
             gson.fromJson(value, Array<String>::class.java).toList()
+        }catch (e: Exception){
+            emptyList()
         }
     }
-
 }

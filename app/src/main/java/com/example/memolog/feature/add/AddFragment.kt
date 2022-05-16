@@ -66,7 +66,7 @@ class AddFragment : Fragment(){
                 isBookmark= false,
                 createdTime = getCurrentTime(),
                 updatedTime = getCurrentTime(),
-                image = listOf("")
+                image = null
             )
             addViewModel.insertMemo(memo)
 
