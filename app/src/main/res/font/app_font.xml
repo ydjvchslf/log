@@ -6,19 +6,19 @@
 
     <!--light-->
     <font
-        android:font="@font/chosun"
+        android:font="@font/jeju_gothic"
         android:fontStyle="normal"
         android:fontWeight="300"
-        app:font="@font/chosun"
+        app:font="@font/jeju_gothic"
         app:fontStyle="normal"
         app:fontWeight="300" />
 
     <!--bold-->
     <font
-        android:font="@font/chosun"
+        android:font="@font/jeju_gothic"
         android:fontStyle="normal"
         android:fontWeight="1000"
-        app:font="@font/chosun"
+        app:font="@font/jeju_gothic"
         app:fontStyle="normal"
         app:fontWeight="1000" />
 
