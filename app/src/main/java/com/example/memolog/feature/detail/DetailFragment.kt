@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.net.Uri.parse
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,12 +31,16 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
 import android.provider.MediaStore
+import androidx.core.net.toUri
 import com.example.memolog.event.ImageEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Exception
 import java.io.File
+import java.net.HttpCookie.parse
+import java.net.URI
+import java.util.logging.Level.parse
 
 
 class DetailFragment : Fragment() {
@@ -48,6 +53,8 @@ class DetailFragment : Fragment() {
     private var memoId = 0L
     private lateinit var backPressCallback: OnBackPressedCallback
     private var password = ""
+    private var imageList = MutableLiveData(arrayListOf<String>())
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,6 +77,7 @@ class DetailFragment : Fragment() {
         val args: DetailFragmentArgs by navArgs()
         memoId = args.memoId
 
+        // 처음 메모 클릭 후, 내용 가져오는 부분
         detailViewModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = makeSimpleDate(memo.updatedTime)
             binding.textTitle.text = memo.title
@@ -80,6 +88,19 @@ class DetailFragment : Fragment() {
             if(isLock.value == true){
                 password = memo.password.toString()
                 Log.d("MemoDebug", "password : $password")
+            }
+            // image 있는지 체크
+            memo.image.let{
+                if(it?.size!! > 0){
+                    val savedImageUri = memo.image!![0]
+                    Log.d("MemoDebug", "savedImageUri: $savedImageUri")
+
+//                    var u: String = savedImageUri
+//                    var link = u.toUri()
+
+                    binding.imageView.setImageURI(savedImageUri.toUri())
+                    binding.imageView.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -190,6 +211,10 @@ class DetailFragment : Fragment() {
                 current.content = binding.editContent.text.toString()
                 val currentTime = getCurrentTime()
                 current.updatedTime = currentTime
+
+                if(imageList.value?.isNotEmpty() == true){
+                    current.image = imageList.value
+                }
 
                 detailViewModel.updateMemo(current)
 
@@ -471,6 +496,7 @@ class DetailFragment : Fragment() {
                     Log.d("MemoDebug", "realUri====> $realUri")
                 }
 
+                imageList.value?.add(realUri.toString())
                 binding.imageView.setImageURI(realUri)
                 binding.imageView.visibility = View.VISIBLE
 
