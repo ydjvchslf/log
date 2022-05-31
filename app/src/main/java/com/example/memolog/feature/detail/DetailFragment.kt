@@ -4,6 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
 import android.net.Uri
 import android.net.Uri.parse
 import android.os.Bundle
@@ -32,12 +36,26 @@ import androidx.navigation.fragment.findNavController
 import com.example.memolog.getCurrentTime
 import android.provider.MediaStore
 import androidx.core.net.toUri
+import androidx.databinding.DataBindingUtil.setContentView
 import com.example.memolog.event.ImageEvent
+import com.google.android.gms.tasks.Task
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Exception
 import java.io.File
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.face.*
+import android.graphics.Bitmap
+
+
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
+import android.graphics.drawable.shapes.RectShape
+
+
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
@@ -49,6 +67,8 @@ class DetailFragment : Fragment() {
     private lateinit var backPressCallback: OnBackPressedCallback
     private var password = ""
     private var imageList = MutableLiveData(arrayListOf<String>())
+    private var inputImage: InputImage? = null
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +91,22 @@ class DetailFragment : Fragment() {
         val args: DetailFragmentArgs by navArgs()
         memoId = args.memoId
 
+        ////////////////////////////////////////////////////////////////////
+        // High-accuracy landmark detection and face classification
+        // detector에 대한 옵션 설정
+        // High-accuracy landmark detection and face classification
+        // detector에 대한 옵션 설정
+        val highAccuracyOpts = FaceDetectorOptions.Builder()
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+            .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .enableTracking()
+            .build()
+
+        // detector생성
+        val faceDetector: FaceDetector = FaceDetection.getClient(highAccuracyOpts)
+        ////////////////////////////////////////////////////////////////////
+
         // 처음 메모 클릭 후, 내용 가져오는 부분
         detailViewModel.getOneMemo(memoId) { memo ->
             binding.updatedTime.text = makeSimpleDate(memo.updatedTime)
@@ -88,17 +124,88 @@ class DetailFragment : Fragment() {
                 if(it?.size!! > 0){
                     val savedImageUri = memo.image!![0]
                     Log.d("MemoDebug", "savedImageUri: $savedImageUri")
+                    imageUri = savedImageUri.toUri()
+
+                    inputImage = context?.let { context -> InputImage.fromFilePath(context, savedImageUri.toUri()) }
+                    Log.d("MemoDebug", "inputImage: $inputImage")
 
                     activity?.runOnUiThread(Runnable {
                         // UI 코드를 이 안으로 옮긴다.
                         binding.imageView.setImageURI(savedImageUri.toUri())
                         binding.imageView.visibility = View.VISIBLE
                     })
-
-                    //inputImage = InputImage.fromFilePath(context, savedImageUri.toUri())
                 }
             }
         }
+
+        ////////////////////////////////////////////////////////////////////
+        binding.detectBtn.setOnClickListener {
+            val result = inputImage?.let { inputImage ->
+                faceDetector.process(inputImage)
+                    .addOnSuccessListener { faces ->
+                        // Task completed successfully
+                        if(faces.isEmpty()){
+                            Toast.makeText(binding.root.context, "No faces detected", Toast.LENGTH_SHORT).show()
+                        }else{
+                            for (face in faces) {
+                                val bounds = face.boundingBox
+                                val rotY = face.headEulerAngleY // Head is rotated to the right rotY degrees
+                                val rotZ = face.headEulerAngleZ // Head is tilted sideways rotZ degrees
+
+                                // If landmark detection was enabled (mouth, ears, eyes, cheeks, and
+                                // nose available):
+                                val leftEar = face.getLandmark(FaceLandmark.LEFT_EAR)
+                                leftEar?.let {
+                                    val leftEarPos = leftEar.position
+                                }
+
+                                // If classification was enabled:
+                                if (face.smilingProbability != null) {
+                                    val smileProb = face.smilingProbability
+                                }
+                                if (face.rightEyeOpenProbability != null) {
+                                    val rightEyeOpenProb = face.rightEyeOpenProbability
+                                }
+
+                                // If face tracking was enabled:
+                                if (face.trackingId != null) {
+                                    val id = face.trackingId
+                                }
+                            }
+
+                        }
+                        Log.d("MemoDebug", "faces: $faces")
+                        Log.d("MemoDebug", "face top => ${faces[0].boundingBox.top}")
+                        Log.d("MemoDebug", "face left => ${faces[0].boundingBox.left}")
+                        Log.d("MemoDebug", "face right => ${faces[0].boundingBox.right}")
+                        Log.d("MemoDebug", "face bottom => ${faces[0].boundingBox.bottom}")
+
+                        val bottom = faces[0].boundingBox.bottom.toFloat()
+                        val top = faces[0].boundingBox.top.toFloat()
+                        val left = faces[0].boundingBox.left.toFloat()
+                        val right = faces[0].boundingBox.right.toFloat()
+
+                        val bitmapImage = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
+                        val mutableBitmap = bitmapImage.copy(Bitmap.Config.ARGB_8888, true)
+                        val canvas = Canvas(mutableBitmap)
+
+                        val paint = Paint()
+                        paint.strokeWidth = 7f
+                        paint.style = Paint.Style.STROKE
+                        paint.color = Color.RED
+                        canvas.drawRect(left, top, right, bottom, paint)
+
+                        binding.imageView.setImageBitmap(mutableBitmap)
+
+
+                    }
+                    .addOnFailureListener { e ->
+                        // Task failed with an exception
+                        Log.d("MemoDebug", "e: $e")
+                    }
+            }
+        }
+        ////////////////////////////////////////////////////////////////////
 
         isEditMode.observe(viewLifecycleOwner) { isEditMode ->
             if (isEditMode) { // 수정모드
@@ -519,6 +626,4 @@ class DetailFragment : Fragment() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
-
-
 }
