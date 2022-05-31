@@ -38,11 +38,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.lang.Exception
 import java.io.File
-import java.net.HttpCookie.parse
-import java.net.URI
-import java.util.logging.Level.parse
-
-
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
@@ -54,7 +49,6 @@ class DetailFragment : Fragment() {
     private lateinit var backPressCallback: OnBackPressedCallback
     private var password = ""
     private var imageList = MutableLiveData(arrayListOf<String>())
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,11 +89,13 @@ class DetailFragment : Fragment() {
                     val savedImageUri = memo.image!![0]
                     Log.d("MemoDebug", "savedImageUri: $savedImageUri")
 
-//                    var u: String = savedImageUri
-//                    var link = u.toUri()
+                    activity?.runOnUiThread(Runnable {
+                        // UI 코드를 이 안으로 옮긴다.
+                        binding.imageView.setImageURI(savedImageUri.toUri())
+                        binding.imageView.visibility = View.VISIBLE
+                    })
 
-                    binding.imageView.setImageURI(savedImageUri.toUri())
-                    binding.imageView.visibility = View.VISIBLE
+                    //inputImage = InputImage.fromFilePath(context, savedImageUri.toUri())
                 }
             }
         }
@@ -523,4 +519,6 @@ class DetailFragment : Fragment() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
+
+
 }
