@@ -22,6 +22,25 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/ic_baseline_arrow_back_24" />
 
+        <!-- 임시용 -->
+        <ImageView
+            android:id="@+id/get_image_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toEndOf="@id/back_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/ic_baseline_add_box_24"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/detect_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toEndOf="@id/get_image_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/ic_baseline_face_24"/>
+        <!-- 임시용 -->
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_photo_btn"
             android:layout_width="40dp"

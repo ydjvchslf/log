@@ -96,5 +96,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //EventBus
     implementation 'org.greenrobot:eventbus:3.2.0'
+    //MLKit
+    implementation 'com.google.mlkit:face-detection:16.1.5'
 
 }
