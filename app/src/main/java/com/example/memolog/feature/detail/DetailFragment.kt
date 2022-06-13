@@ -175,29 +175,30 @@ class DetailFragment : Fragment() {
 
                         }
                         Log.d("MemoDebug", "faces: $faces")
-                        Log.d("MemoDebug", "face top => ${faces[0].boundingBox.top}")
-                        Log.d("MemoDebug", "face left => ${faces[0].boundingBox.left}")
-                        Log.d("MemoDebug", "face right => ${faces[0].boundingBox.right}")
-                        Log.d("MemoDebug", "face bottom => ${faces[0].boundingBox.bottom}")
 
-                        val bottom = faces[0].boundingBox.bottom.toFloat()
-                        val top = faces[0].boundingBox.top.toFloat()
-                        val left = faces[0].boundingBox.left.toFloat()
-                        val right = faces[0].boundingBox.right.toFloat()
+                        if(faces.size > 0){
+                            Log.d("MemoDebug", "face top => ${faces[0].boundingBox.top}")
+                            Log.d("MemoDebug", "face left => ${faces[0].boundingBox.left}")
+                            Log.d("MemoDebug", "face right => ${faces[0].boundingBox.right}")
+                            Log.d("MemoDebug", "face bottom => ${faces[0].boundingBox.bottom}")
 
-                        val bitmapImage = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
-                        val mutableBitmap = bitmapImage.copy(Bitmap.Config.ARGB_8888, true)
-                        val canvas = Canvas(mutableBitmap)
+                            val bottom = faces[0].boundingBox.bottom.toFloat()
+                            val top = faces[0].boundingBox.top.toFloat()
+                            val left = faces[0].boundingBox.left.toFloat()
+                            val right = faces[0].boundingBox.right.toFloat()
 
-                        val paint = Paint()
-                        paint.strokeWidth = 7f
-                        paint.style = Paint.Style.STROKE
-                        paint.color = Color.RED
-                        canvas.drawRect(left, top, right, bottom, paint)
+                            val bitmapImage = MediaStore.Images.Media.getBitmap(context?.contentResolver, imageUri)
+                            val mutableBitmap = bitmapImage.copy(Bitmap.Config.ARGB_8888, true)
+                            val canvas = Canvas(mutableBitmap)
 
-                        binding.imageView.setImageBitmap(mutableBitmap)
+                            val paint = Paint()
+                            paint.strokeWidth = 7f
+                            paint.style = Paint.Style.STROKE
+                            paint.color = Color.RED
+                            canvas.drawRect(left, top, right, bottom, paint)
 
-
+                            binding.imageView.setImageBitmap(mutableBitmap)
+                        }
                     }
                     .addOnFailureListener { e ->
                         // Task failed with an exception
