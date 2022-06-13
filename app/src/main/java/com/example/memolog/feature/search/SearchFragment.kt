@@ -86,6 +86,7 @@ class SearchFragment: Fragment(){
                 .doOnNext { keyword ->
                     //binding.textView.text = it
                     if(keyword.isEmpty()){
+                        memoAdapter.clear()
                         return@doOnNext
                     }
                     searchViewModel.memoList.observe(viewLifecycleOwner){ memoList ->
@@ -96,10 +97,15 @@ class SearchFragment: Fragment(){
                         var searchList = arrayListOf<MemoModel>()
 
                         memoList?.forEach { memo ->
-                            val result = memo.content.contains(keyword)
                             Log.d("MemoDebug", "memo.id : ${memo.id}")
-                            Log.d("MemoDebug", "검색어 내용에 포함? : $result")
-                            if(result){
+
+                            val titleResult = memo.title.contains(keyword)
+                            val resultContent = memo.content.contains(keyword)
+
+                            Log.d("MemoDebug", "검색어가 제목에 포함? : $titleResult")
+                            Log.d("MemoDebug", "검색어 내용에 포함? : $resultContent")
+
+                            if(titleResult||resultContent){
                                 val memoModel = MemoModel.fromEntity(memo)
                                 searchList.add(memoModel)
                                 memoAdapter.setListData(searchList)
