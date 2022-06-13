@@ -362,10 +362,10 @@ class DetailFragment : Fragment() {
 //            CropImage.activity()
 //                .start(requireContext(), this)
 
-            // 갤러리 다중이미지 선택 띄우기
+            // 갤러리 이미지 선택 띄우기
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = MediaStore.Images.Media.CONTENT_TYPE
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true) // 다중 이미지 true
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false) // 다중 이미지는 true
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             startActivityForResult(intent, 100)
             //activity?.startActivityForResult(intent, 100)
