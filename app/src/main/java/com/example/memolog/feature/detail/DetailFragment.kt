@@ -416,6 +416,10 @@ class DetailFragment : Fragment() {
                 val currentTime = getCurrentTime()
                 current.updatedTime = currentTime
 
+                if(imageList.value?.isNotEmpty() == true){
+                    current.image = imageList.value
+                }
+
                 detailViewModel.updateMemo(current)
                 isEditMode.postValue(false)
             }
@@ -577,8 +581,31 @@ class DetailFragment : Fragment() {
             //onActivityResult(it.requestCode, it.resultCode, it.data)
             Log.d("MemoDebug", "DetailFragment:: imageEvent: $event")
 
-            var clipData = event.data?.clipData
+            var data = event.data?.data // 단일이미지 일때
+            var clipData = event.data?.clipData // 다중이미지 일때
+
+            Log.d("MemoDebug", "DetailFragment:: imageEvent data: $data")
+            Log.d("MemoDebug", "DetailFragment:: imageEvent clipData: $clipData")
+
             var uriList = arrayListOf<Uri>()
+
+            // 단일이미지 일때
+            data.let { contentUri ->
+                Log.d("MemoDebug", "DetailFragment:: imageEvent contentUri=> $contentUri")
+
+                val filePath = getRealPathFromURI(requireContext(), contentUri)
+                Log.d("MemoDebug", "filePath=> $filePath")
+
+                val realUri = Uri.fromFile(File(filePath))
+                realUri.let {
+                    Log.d("MemoDebug", "realUri==> $realUri")
+                }
+                imageList.value?.add(realUri.toString())
+                binding.imageView.setImageURI(realUri)
+                binding.imageView.visibility = View.VISIBLE
+            }
+
+            // 다중이미지 일때
             clipData.let {
                 for (i in 0 until clipData!!.itemCount) {
                     val imageUri: Uri = clipData.getItemAt(i).uri // 선택한 이미지들의 uri를 가져온다.
@@ -599,12 +626,9 @@ class DetailFragment : Fragment() {
                 realUri.let {
                     Log.d("MemoDebug", "realUri====> $realUri")
                 }
-
                 imageList.value?.add(realUri.toString())
                 binding.imageView.setImageURI(realUri)
                 binding.imageView.visibility = View.VISIBLE
-
-
             }
         }
     }
