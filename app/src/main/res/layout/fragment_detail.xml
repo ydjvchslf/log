@@ -38,7 +38,8 @@
             android:layout_height="40dp"
             app:layout_constraintStart_toEndOf="@id/get_image_btn"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/ic_baseline_face_24"/>
+            android:background="@drawable/ic_baseline_face_24"
+            android:visibility="gone"/>
         <!-- 임시용 -->
 
         <androidx.appcompat.widget.AppCompatButton
