@@ -54,6 +54,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.RectShape
+import android.os.Handler
+import android.os.Looper
 
 
 class DetailFragment : Fragment() {
@@ -134,6 +136,18 @@ class DetailFragment : Fragment() {
                         binding.imageView.setImageURI(savedImageUri.toUri())
                         binding.imageView.visibility = View.VISIBLE
                     })
+                }
+            }
+        }
+
+        // 이미지 있을 시 이미지 삭제
+        binding.imageView.setOnClickListener {
+            Log.d("MemoDebug", "이미지 클릭했슈")
+            showImageDeleteDialog(memoId){ result ->
+                if(result) {
+                    Handler(Looper.getMainLooper()).post {
+                        binding.imageView.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -558,6 +572,25 @@ class DetailFragment : Fragment() {
         val window = dialogBuilder3.window
         window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
         window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+    }
+
+    private fun showImageDeleteDialog(id: Long, result:(Boolean)-> Unit){
+        AlertDialog.Builder(context)
+            .setMessage("이미지를 삭제하시겠어요?")
+            .setPositiveButton("yes") { _, _ ->
+                Log.d("MemoDebug", "이미지 삭제할 memoId: $id")
+                detailViewModel.getOneMemo(id){ memo ->
+                    Log.d("MemoDebug", "이미지 삭제 전 memo: $memo")
+                    memo.image = null
+                    detailViewModel.updateMemo(memo)
+                    Log.d("MemoDebug", "이미지 삭제 후 memo: $memo")
+                    result.invoke(true)
+                }
+            }
+            .setNegativeButton("cancel") { _, _ ->
+               //nothing
+            }
+            .show()
     }
 
     private fun EditText.showKeyboard() {
